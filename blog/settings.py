@@ -45,6 +45,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # whitenoise，这个魔法包可以让 DEBUG=False 的时候使用本地的static file，而不用去配置cdn
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -122,15 +124,25 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 ##################################
+
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
-# 部署的时候（DEBUG关掉），要重新用collectstatic弄一下
-# 74集结尾
-# STATIC_ROOT = BASE_DIR / "staticfiles-cdn"
+# 用WhiteNoise提供static文件：
+# https://whitenoise.readthedocs.io/en/latest/django.html
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# py .\manage.py collectstatic
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+WHITENOISE_INDEX_FILE=True
 
 ##################################
 
