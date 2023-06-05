@@ -3,9 +3,13 @@
 import os
 import sys
 
+import dotenv
 
 def main():
     """Run administrative tasks."""
+    
+    dotenv.read_dotenv() #在根目录放一个.env文件，里面是settings中需要用到的不应该公开的参数
+
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'blog.settings')
     try:
         from django.core.management import execute_from_command_line

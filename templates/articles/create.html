@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}
+Create Articles
+{% endblock %}
+
+{% block head %}
+Create Articles
+{% endblock %}
+
+{% block content %}
+
+{% if not created %}
+    <form action="." method="POST">
+        {% csrf_token %}
+        <table>
+            {{form}}
+        </table>
+        <button type="submit">Submit</button>
+    </form>
+{% else %}
+<a href="/articles/{{article.id}}/">Your article is here.</a>
+{% endif %}
+
+{% endblock %}

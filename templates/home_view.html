@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<ul>
+    {% for i in article_queryset%}
+    <li>
+        <a href="/articles/{{i.id}}/">{{i.id}} - {{i.title}}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
