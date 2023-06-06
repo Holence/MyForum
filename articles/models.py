@@ -1,12 +1,12 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
-from django.conf import settings
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Article(models.Model):
     
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.DO_NOTHING)
+    author = models.ForeignKey(User, blank=True, null=True, on_delete=models.DO_NOTHING)
     title = models.CharField(unique=True, max_length=128)
     slug = models.SlugField(unique=True, blank=True, null=True, allow_unicode=True)
     content = models.TextField()

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+Account
+{% endblock %}
+
+{% block content %}
+
+<h1>{{account.user.first_name}} {{account.user.last_name}}</h1>
+<h2>@{{account.user}}</h2>
+
+{% if account.user.username == request.user.username %}
+    <div style="display: flex; justify-content: flex-end;" >
+        <a class="small" style="margin-right: 1em;" href="{% url "accounts:password" %}">Change Password</a>
+        <a class="small" href="{% url "accounts:edit" %}">Edit Profile</a>
+    </div>
+{% endif %}
+
+<p>Url: {{account.url}}</p>
+<p>Email: {{account.user.email}}</p>
+<p>Bio: {{account.bio}}</p>
+<p>Avatar: </p>
+
+{% endblock %}

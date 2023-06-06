@@ -1,11 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-<ul>
-    {% for i in article_queryset%}
-    <li>
-        <a href="{{ i.get_absolute_url }}">{{i.id}} - {{i.title}}</a>
-    </li>
-    {% endfor %}
-</ul>
+{% include "articles/articles_list.html" %}
+{% include "articles/search_box.html" %}
 {% endblock %}

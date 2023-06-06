@@ -22,6 +22,10 @@
     color: rgb(230, 153, 46);
 }
 
+.small{
+    font-size: 0.9em;
+}
+
 a {
     color: #0060B6;
     text-decoration: none;

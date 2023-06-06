@@ -8,13 +8,15 @@
 
 <h1>{{article.title}}</h1>
 
-<i>Author: {{article.author}}</i>
+<i>Author: <a href="{% url "accounts:detail" username=article.author.username %}">{{article.author}}</a></i>
 
 <p>{{article.content}}</p>
 
-<div style="float: right;">
-    <a style="margin-right: 1em;" href="{{ article.get_edit_url }}"><small>Edit</small></a>
-    <a href="{{ article.get_delete_url }}"><small>Delete</small></a>
+<div style="display: flex; justify-content: flex-end;">
+    <a class="small" style="margin-right: 1em;" href="{{ article.get_edit_url }}">Edit</a>
+    <a class="small" href="{{ article.get_delete_url }}">Delete</a>
 </div>
+
+{% include "articles/search_box.html" %}
 
 {% endblock %}

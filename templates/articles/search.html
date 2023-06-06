@@ -11,11 +11,7 @@ Articles
 </h1>
 
 {% if articles %}
-    {% for i in articles%}
-    <li>
-        <a href="{{ i.get_absolute_url }}">{{i.id}} - {{i.title}}</a>
-    </li>
-    {% endfor %}
+{% include "articles/articles_list.html" %}
 {% else %}
 <b style="font-size: 24px; color: rgb(100, 100, 100);">
     你似乎来到了没有知识存在的荒原

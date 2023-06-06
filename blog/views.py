@@ -2,8 +2,8 @@ from django.shortcuts import render
 from articles.models import Article
 
 def home_view(request):
-    article_queryset = Article.objects.all()
+    articles = Article.objects.all()
     context={
-        "article_queryset": article_queryset
+        "articles": articles
     }
     return render(request, "home_view.html", context)

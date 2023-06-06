@@ -68,7 +68,7 @@ def article_delete_view(request, slug):
             choice=request.POST.get("choice")
             if choice=="Yes":
                 article.delete()
-                return redirect("/")
+                return redirect("home")
             else:
                 return redirect(article.get_absolute_url())
     else:

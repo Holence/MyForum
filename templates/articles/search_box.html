@@ -1,0 +1,8 @@
+<div style="display: flex; justify-content: flex-end; margin-top: 4em;">
+    <form action="{% url "articles:search" %}" method="GET">
+        <label>Search for Articles:</label>
+        <br>
+        <input type="text" name="q">
+        <button type="submit">Search</button>
+    </form>
+</div>

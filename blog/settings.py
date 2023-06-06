@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'articles',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -138,6 +139,9 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # py .\manage.py collectstatic
 STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
