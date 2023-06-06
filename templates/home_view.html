@@ -4,7 +4,7 @@
 <ul>
     {% for i in article_queryset%}
     <li>
-        <a href="/articles/{{i.id}}/">{{i.id}} - {{i.title}}</a>
+        <a href="/articles/{{i.slug}}/">{{i.id}} - {{i.title}}</a>
     </li>
     {% endfor %}
 </ul>

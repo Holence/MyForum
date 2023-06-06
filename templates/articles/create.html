@@ -13,13 +13,11 @@ Create Articles
 {% if not created %}
     <form action="." method="POST">
         {% csrf_token %}
-        <table>
-            {{form}}
-        </table>
+        {% include "form.html" %}
         <button type="submit">Submit</button>
     </form>
 {% else %}
-<a href="/articles/{{article.id}}/">Your article is here.</a>
+<a href="/articles/{{article.slug}}/">Your article is here.</a>
 {% endif %}
 
 {% endblock %}
