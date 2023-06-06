@@ -5,10 +5,36 @@ from .models import Article
 from .forms import ArticleForm
 # Create your views here.
 
+def have_permission(request, article):
+    return request.user==article.author or request.user.is_superuser
+
+@login_required
+def article_create_view(request):
+    if request.method=="GET":
+        form = ArticleForm()
+    elif request.method=="POST":
+        form = ArticleForm(request.POST)
+        if form.is_valid():
+            article=form.save(commit=False)
+            article.author=request.user
+            article.save()
+            return redirect(article.get_absolute_url())
+        
+    return render(request, "articles/edit.html", {"mode": "Create", "form": form})
+
+def article_detail_view(request, slug):
+    article = Article.objects.get(slug=slug)
+    context={
+        "article": article
+    }
+    return render(request, "articles/detail.html", context)
+
 def article_search_view(request):
     query=request.GET.get("q")
     if query:
-        articles = Article.objects.filter( Q(title__contains=query) | Q(content__contains=query) )
+        articles = Article.objects.filter(
+            Q(title__contains=query) | Q(content__contains=query)
+        )
     else:
         articles = None
     context={
@@ -18,20 +44,32 @@ def article_search_view(request):
     return render(request, "articles/search.html", context)
 
 @login_required
-def article_create_view(request):
-    form = ArticleForm(request.POST or None)
-    context={
-        "form": form
-    }
-    if form.is_valid():
-        article=form.save()
-        return redirect(article.get_absolute_url())
-    else:
-        return render(request, "articles/create.html", context)
-
-def article_view(request, slug):
+def article_edit_view(request, slug):
     article = Article.objects.get(slug=slug)
-    context={
-        "article": article
-    }
-    return render(request, "articles/detail.html", context)
+    if have_permission(request, article):
+        if request.method=="GET":
+            form = ArticleForm(None, instance=article)
+        elif request.method=="POST":
+            form = ArticleForm(request.POST, instance=article)
+            if form.is_valid():
+                form.save()
+                return redirect(article.get_absolute_url())
+        return render(request, "articles/edit.html", {"mode": "Edit", "form": form, "alert": False})
+    else:
+        return render(request, "alert.html", {"message": "You do not have permission to edit!"})
+
+@login_required
+def article_delete_view(request, slug):
+    article = Article.objects.get(slug=slug)
+    if have_permission(request, article):
+        if request.method=="GET":
+            return render(request, "articles/delete.html", {})
+        if request.method=="POST":
+            choice=request.POST.get("choice")
+            if choice=="Yes":
+                article.delete()
+                return redirect("/")
+            else:
+                return redirect(article.get_absolute_url())
+    else:
+        return render(request, "alert.html", {"message": "You do not have permission to delete!"})

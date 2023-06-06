@@ -17,3 +17,16 @@
     font-weight: bold;
     margin-right: 1em;
 }
+
+.nav>a:hover{
+    color: rgb(230, 153, 46);
+}
+
+a {
+    color: #0060B6;
+    text-decoration: none;
+}
+
+a:hover {
+    color:#00A0C6;
+}

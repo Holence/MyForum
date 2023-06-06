@@ -1,16 +1,17 @@
 {% extends "base.html" %}
 
 {% block title %}
-Login
+Create Articles
 {% endblock %}
 
 {% block content %}
-<h1>
-    Login
-</h1>
-<form method="POST">
+
+<h1>{{mode}} Article</h1>
+
+<form action="." method="POST">
     {% csrf_token %}
     {% include "form.html" %}
-    <button type="submit">Login</button>
+    <button type="submit">Submit</button>
 </form>
+
 {% endblock %}

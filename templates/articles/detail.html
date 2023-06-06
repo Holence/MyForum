@@ -4,10 +4,17 @@
 {{article.title}}
 {% endblock %}
 
-{% block head %}
-{{article.title}}
-{% endblock %}
-
 {% block content %}
+
+<h1>{{article.title}}</h1>
+
+<i>Author: {{article.author}}</i>
+
 <p>{{article.content}}</p>
+
+<div style="float: right;">
+    <a style="margin-right: 1em;" href="{{ article.get_edit_url }}"><small>Edit</small></a>
+    <a href="{{ article.get_delete_url }}"><small>Delete</small></a>
+</div>
+
 {% endblock %}

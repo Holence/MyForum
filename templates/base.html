@@ -15,7 +15,7 @@
             
             <div class="nav" style="margin-bottom: 4em;">
                 <a href="/">Home</a>
-                <a href="{% url "articles-create" %}">Create Article</a>
+                <a href="{% url "articles:create" %}">Create Article</a>
                 
                 {% if request.user.is_staff %}
                     <a href="/admin/">Admin</a>
@@ -27,22 +27,17 @@
                 {% else %}
                     <div style="margin-top: 1em;">
                         <label style="float: left;">Welcome, {{request.user.username}}</label>
-                        <a style="float: right;" href="{% url "logout" %}">Logout</a>
+                        <a style="float: right;" href="{% url "logout" %}"><small>Logout</small></a>
                     </div>
                 {% endif %}
             </div>
-            
-            <h1>
-                {% block head %}
-                {% endblock %}
-            </h1>
     
             {% block content %}
             {% endblock %}
             
             <br>
-            <div style="float: right;">
-                <form action="{% url "articles-search" %}" method="GET">
+            <div style="float: right; margin-top: 4em;">
+                <form action="{% url "articles:search" %}" method="GET">
                     <label>Search for Articles:</label>
                     <br>
                     <input type="text" name="q">

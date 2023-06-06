@@ -4,14 +4,22 @@
 Articles
 {% endblock %}
 
-{% block head %}
-Search Articles{% if q %} - "{{ q }}"{% endif %}
-{% endblock %}
-
 {% block content %}
-{% for i in articles%}
-<li>
-    <a href="{{ i.get_absolute_url }}">{{i.id}} - {{i.title}}</a>
-</li>
-{% endfor %}
+
+<h1>
+    Search Articles{% if q %} - "{{ q }}"{% endif %}
+</h1>
+
+{% if articles %}
+    {% for i in articles%}
+    <li>
+        <a href="{{ i.get_absolute_url }}">{{i.id}} - {{i.title}}</a>
+    </li>
+    {% endfor %}
+{% else %}
+<b style="font-size: 24px; color: rgb(100, 100, 100);">
+    你似乎来到了没有知识存在的荒原
+</b>
+{% endif %}
+
 {% endblock %}

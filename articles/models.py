@@ -1,10 +1,12 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
-
+from django.conf import settings
 
 # Create your models here.
 class Article(models.Model):
+    
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.DO_NOTHING)
     title = models.CharField(unique=True, max_length=128)
     slug = models.SlugField(unique=True, blank=True, null=True, allow_unicode=True)
     content = models.TextField()
@@ -12,16 +14,22 @@ class Article(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
-        return reverse("articles-detail", kwargs={"slug": self.slug})
+        return reverse("articles:detail", kwargs={"slug": self.slug})
+    
+    def get_edit_url(self):
+        return reverse("articles:edit", kwargs={"slug": self.slug})
+    
+    def get_delete_url(self):
+        return reverse("articles:delete", kwargs={"slug": self.slug})
     
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title, allow_unicode=True)
-            articles = Article.objects.filter(slug__exact=self.slug).exclude(id=self.id)
-            if articles:
-                articles = Article.objects.filter(slug__contains=self.slug+"_").exclude(id=self.id)
-                self.slug = self.slug+"_"+str(articles.count()+1)
         
+        self.slug = slugify(self.title, allow_unicode=True)
+        articles = Article.objects.filter(slug__exact=self.slug).exclude(id=self.id)
+        if articles:
+            articles = Article.objects.filter(slug__contains=self.slug+"_").exclude(id=self.id)
+            self.slug = self.slug+"_"+str(articles.count()+1)
+    
         super().save(*args, **kwargs)
 
 # Signal

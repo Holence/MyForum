@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{article.title}}
+{% endblock %}
+
+{% block content %}
+<div style="width: 200px; margin: 0 auto;">
+    <form action="." method="POST">
+        {% csrf_token %}
+        <p>Are you sure to delete?</p>
+        <input type="submit" name='choice' value="Yes">
+        <input type="submit" name='choice' value="No">
+    </form>
+</div>
+{% endblock %}
