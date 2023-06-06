@@ -13,18 +13,21 @@
     <body>
         <div style="width: 60%; margin: 2em auto;">
             
-            <div style="margin-bottom: 4em;">
-                <a style="display: inline-block; margin-right: 1em;" href="/"><h1>Home</h1></a>
-                <a style="display: inline-block; margin-right: 1em;" href="/articles/create/"><h1>Create Article</h1></a>
-                <a style="display: inline-block; margin-right: 1em;" href="/admin/"><h1>Admin</h1></a>
+            <div class="nav" style="margin-bottom: 4em;">
+                <a href="/">Home</a>
+                <a href="{% url "articles-create" %}">Create Article</a>
+                
+                {% if request.user.is_staff %}
+                    <a href="/admin/">Admin</a>
+                {% endif %}
+
                 {% if not request.user.is_authenticated %}
-                    <a style="display: inline-block; margin-right: 1em;" href="/login/"><h1>Login</h1></a>
-                    <a style="display: inline-block; margin-right: 1em;" href="/register/"><h1>Register</h1></a>
+                    <a href="{% url "login" %}">Login</a>
+                    <a href="{% url "register" %}">Register</a>
                 {% else %}
-                    <br>
-                    <div>
+                    <div style="margin-top: 1em;">
                         <label style="float: left;">Welcome, {{request.user.username}}</label>
-                        <a style="float: right;" href="/logout/">Logout</a>
+                        <a style="float: right;" href="{% url "logout" %}">Logout</a>
                     </div>
                 {% endif %}
             </div>
@@ -39,7 +42,7 @@
             
             <br>
             <div style="float: right;">
-                <form action="/articles/search/" method="GET">
+                <form action="{% url "articles-search" %}" method="GET">
                     <label>Search for Articles:</label>
                     <br>
                     <input type="text" name="q">

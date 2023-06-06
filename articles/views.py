@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required #需要登陆才能用，会跳转到settings中的LOGIN_URL
-
+from django.db.models import Q
 from .models import Article
 from .forms import ArticleForm
 # Create your views here.
@@ -8,7 +8,7 @@ from .forms import ArticleForm
 def article_search_view(request):
     query=request.GET.get("q")
     if query:
-        articles = Article.objects.filter(content__contains=query)
+        articles = Article.objects.filter( Q(title__contains=query) | Q(content__contains=query) )
     else:
         articles = None
     context={
@@ -25,12 +25,11 @@ def article_create_view(request):
     }
     if form.is_valid():
         article=form.save()
-        context["article"] = article
-        context["created"] = True
-    return render(request, "articles/create.html", context)
+        return redirect(article.get_absolute_url())
+    else:
+        return render(request, "articles/create.html", context)
 
 def article_view(request, slug):
-    
     article = Article.objects.get(slug=slug)
     context={
         "article": article

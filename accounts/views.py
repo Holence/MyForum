@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.http import HttpRequest
 
 # Create your views here.
-def login_view(request: HttpRequest):
+def login_view(request):
     if request.user.is_authenticated:
         return redirect("/")
     

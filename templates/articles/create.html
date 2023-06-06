@@ -10,14 +10,10 @@ Create Articles
 
 {% block content %}
 
-{% if not created %}
     <form action="." method="POST">
         {% csrf_token %}
         {% include "form.html" %}
         <button type="submit">Submit</button>
     </form>
-{% else %}
-<a href="/articles/{{article.slug}}/">Your article is here.</a>
-{% endif %}
 
 {% endblock %}

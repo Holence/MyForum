@@ -10,6 +10,10 @@
     border: 2px red solid;
 }
 
-a h1{
+.nav>a{
+    display: inline-block;
     color: chocolate;
+    font-size: 2em;
+    font-weight: bold;
+    margin-right: 1em;
 }
