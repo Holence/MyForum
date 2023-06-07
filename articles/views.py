@@ -31,17 +31,30 @@ def article_detail_view(request, slug):
 
 def article_search_view(request):
     query=request.GET.get("q")
+    seach_type=request.GET.get("type")
     if query:
-        articles = Article.objects.filter(
-            Q(title__contains=query) | Q(content__contains=query)
-        )
+        if seach_type=="all":
+            articles = Article.objects.filter(
+                Q(title__icontains=query) | Q(content__icontains=query)
+            )
+        elif seach_type=="title":
+            articles = Article.objects.filter(
+                Q(title__icontains=query)
+            )
+        elif seach_type=="content":
+            articles = Article.objects.filter(
+                Q(content__icontains=query)
+            )
     else:
         articles = None
     context={
-        "q": query,
+        "query": query,
         "articles": articles
     }
-    return render(request, "articles/search.html", context)
+    if request.htmx:
+        return render(request, "articles/search_list.html", context)
+    else:
+        return render(request, "articles/search.html", context)
 
 @login_required
 def article_edit_view(request, slug):

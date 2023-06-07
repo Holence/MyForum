@@ -10,14 +10,46 @@ Articles
     Search Articles{% if q %} - "{{ q }}"{% endif %}
 </h1>
 
-{% if articles %}
-{% include "articles/articles_list.html" %}
-{% else %}
-<b style="font-size: 24px; color: rgb(100, 100, 100);">
-    你似乎来到了没有知识存在的荒原
-</b>
-{% endif %}
+<form action="{% url "articles:search" %}" method="GET">
+    <select
+        name="type"
+        id="search-type"
+        hx-include="#search-input"
+        hx-trigger="change delay:50ms"
+        hx-get="{% url "articles:search" %}"
+        hx-target="#search-list"
+    >
+        
+        {% if request.GET.type == "all" %}
+            <option value="all" selected>All</option>
+        {% else %}
+            <option value="all">All</option>
+        {% endif %}
+        
+        {% if request.GET.type == "title" %}
+            <option value="title" selected>Title</option>
+        {% else %}
+            <option value="title">Title</option>
+        {% endif %}
+        
+        {% if request.GET.type == "content" %}
+            <option value="content" selected>Content</option>
+        {% else %}
+            <option value="content">Content</option>
+        {% endif %}
 
-{% include "articles/search_box.html" %}
-
+    </select>
+    <input
+        type="search"
+        name="q"
+        id="search-input"
+        value="{{ request.GET.q }}"
+        hx-include="#search-type"
+        hx-trigger="keyup changed delay:50ms, search"
+        hx-get="{% url "articles:search" %}"
+        hx-target="#search-list"
+    >
+</form>
+<br>
+<div id="search-list">{% include "articles/search_list.html" %}</div>
 {% endblock %}
