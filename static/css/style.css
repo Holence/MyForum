@@ -34,3 +34,12 @@ a {
 a:hover {
     color:#00A0C6;
 }
+
+/* crispy */
+small[id*='hint_id']{
+    color: grey;
+}
+
+p[id*='error_']{
+    color: red;
+}

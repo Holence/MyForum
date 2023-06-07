@@ -1,3 +1,5 @@
 django
 django-dotenv
+django-crispy-forms
+crispy-bootstrap4
 WhiteNoise

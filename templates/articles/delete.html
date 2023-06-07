@@ -5,12 +5,14 @@
 {% endblock %}
 
 {% block content %}
-<div style="width: 200px; margin: 0 auto;">
+<div style="display: flex; justify-content: center;">
     <form action="." method="POST">
         {% csrf_token %}
         <p>Are you sure to delete?</p>
-        <input type="submit" name='choice' value="Yes">
-        <input type="submit" name='choice' value="No">
+        <div style="display: flex; justify-content: center;">
+            <input type="submit" name='choice' value="Yes" style="margin-right: 1em;">
+            <input type="submit" name='choice' value="No">
+        </div>
     </form>
 </div>
 {% endblock %}
