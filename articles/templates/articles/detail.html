@@ -8,7 +8,7 @@
 
 <h1>{{article.title}}</h1>
 
-<i>Author: <a href="{% url "accounts:detail" username=article.author.username %}">{{article.author}}</a></i>
+{% include "accounts/nametag.html" with account=article.author.account %}
 
 <p>{{article.content}}</p>
 

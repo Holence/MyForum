@@ -39,8 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    # Using WhiteNoise in development
-    "whitenoise.runserver_nostatic",
     'django.contrib.staticfiles',
     'crispy_forms',
     'crispy_bootstrap4',
@@ -54,8 +52,6 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    # whitenoise，这个魔法包可以让 DEBUG=False 的时候使用本地的static file，而不用去配置cdn
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -137,9 +133,6 @@ USE_TZ = True
 
 ##################################
 
-# 网址中的staticfile的URL前缀
-STATIC_URL = '/static/'
-
 # DEBUG=1 时寻找额外的staticfile的路径（本来就包括了各app内的static文件）
 # .\manage.py collectstatic 时copy文件的路径
 STATICFILES_DIRS = [
@@ -147,32 +140,28 @@ STATICFILES_DIRS = [
 ]
 
 # 在部署的时候Django本身不再到各个app以及STATICFILES_DIRS指定的路径寻找staticfile
-# 而是让其他软件辅助提供staticfile
+# 而是让其他软件（比如Nginx）辅助提供staticfile
 # 就需要提前使用
 # py .\manage.py collectstatic 指令去收集staticfile 到 STATIC_ROOT 中
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+# 动态的（用户上传的）文件的存储路径
+MEDIA_ROOT = BASE_DIR / "media"
+
 if DEBUG:
-    # DEBUG=1的时候，如果设置成"/static/media/"，就会报错
-    # runserver can't serve media if MEDIA_URL is within STATIC_URL
-    # 所以就只能在这里设为"/media/"，然后再在urls.py中增加一个 static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    # 网址中的staticfile的URL前缀
+    STATIC_URL = '/static/'
+
+    # 动态的（用户上传的）文件的URL前缀
     MEDIA_URL = "/media/"
 else:
-    MEDIA_URL = "/static/media/"
+    CDU_URL = 'http://127.0.0.1:8800'
 
-MEDIA_ROOT = BASE_DIR / "staticfiles" / "media"
+    # 网址中的staticfile的URL前缀
+    STATIC_URL = 'http://127.0.0.1:8800/static/'
 
-# 这里用WhiteNoise提供staticfile
-# https://whitenoise.readthedocs.io/en/latest/django.html
-STORAGES = {
-    "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
-WHITENOISE_INDEX_FILE=True
+    # 动态的（用户上传的）文件的URL前缀
+    MEDIA_URL = "http://127.0.0.1:8800/media/"
 
 ##################################
 

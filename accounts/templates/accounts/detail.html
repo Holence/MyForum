@@ -6,9 +6,7 @@ Account
 
 {% block content %}
 
-<h1>{{account.user.first_name}} {{account.user.last_name}}</h1>
-<img src="{{ account.get_avatar_url }}">
-<h2>@{{account.user}}</h2>
+{% include "accounts/nametag.html" %}
 
 {% if account.user.username == request.user.username %}
     <div style="display: flex; justify-content: flex-end;" >
