@@ -3,4 +3,4 @@ django-crispy-forms
 crispy-bootstrap4
 django-htmx
 Pillow
-python-dotenv
+django-dotenv
