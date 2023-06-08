@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  blog:
+    build: ./blog
+    command: python ./manage.py runserver 0.0.0.0:8080
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    expose:
+      - 8080
+    env_file:
+      - ./.env
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    ports:
+      - 8000:80
+    depends_on:
+      - blog
+
+volumes:
+  static_volume:
+  media_volume:

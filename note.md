@@ -21,3 +21,7 @@ nginx -s stop
 
 完整有序的关闭
 nginx -s quit
+
+# Docker部署
+
+部署在docker里用两个image，一个是django，一个是nginx，放在同一个compose中：用volumes共享staticfiles和media文件夹，nginx的内部端口为80，外部端口为8000，django的内部端口是8080，没有外部端口，让根网址的路由映射到django接管，根网址加上static和media的路由还是由nginx接管。

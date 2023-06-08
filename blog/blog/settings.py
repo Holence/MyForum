@@ -26,10 +26,13 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = str(os.environ.get("DJANGO_DEBUG")) == "1"
 
-ALLOWED_HOSTS = []
-if not DEBUG:
-    ALLOWED_HOSTS+= [os.environ.get("DJANGO_ALLOWED_HOST")]
+ALLOWED_HOSTS = ["*"]
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:8000",
+]
+if os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS'):
+    CSRF_TRUSTED_ORIGINS.append(os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS'))
 
 # Application definition
 
@@ -140,29 +143,20 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
+# 网址中的staticfile的URL前缀
+STATIC_URL = '/static/'
+
 # 在部署的时候Django本身不再到各个app以及STATICFILES_DIRS指定的路径寻找staticfile
 # 而是让其他软件（比如Nginx）辅助提供staticfile
 # 就需要提前使用
 # py .\manage.py collectstatic 指令去收集staticfile 到 STATIC_ROOT 中
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+# 动态的（用户上传的）文件的URL前缀
+MEDIA_URL = "/media/"
+
 # 动态的（用户上传的）文件的存储路径
 MEDIA_ROOT = BASE_DIR / "media"
-
-if DEBUG:
-    # 网址中的staticfile的URL前缀
-    STATIC_URL = '/static/'
-
-    # 动态的（用户上传的）文件的URL前缀
-    MEDIA_URL = "/media/"
-else:
-    CDU_URL = 'http://127.0.0.1:8800'
-
-    # 网址中的staticfile的URL前缀
-    STATIC_URL = 'http://127.0.0.1:8800/static/'
-
-    # 动态的（用户上传的）文件的URL前缀
-    MEDIA_URL = "http://127.0.0.1:8800/media/"
 
 ##################################
 
