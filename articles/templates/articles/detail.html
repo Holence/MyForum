@@ -5,16 +5,39 @@
 {% endblock %}
 
 {% block content %}
+<div>
+    
+    <div style="display: flex; justify-content: space-between;">
+        <div style="display: flex; align-items: center;">
+            <h1>{{article.title}}</h1>
+        </div>
+        <div style="display: flex; align-items: center;">
+            Created at: {{article.timestamp}}
+            <br>
+            Updated at: {{article.updated}}
+        </div>
+    </div>
+    {% include "accounts/nametag.html" with account=article.author.account %}
 
-<h1>{{article.title}}</h1>
-
-{% include "accounts/nametag.html" with account=article.author.account %}
-
-<p>{{article.content}}</p>
-
-<div style="display: flex; justify-content: flex-end;">
-    <a class="small" style="margin-right: 1em;" href="{{ article.get_edit_url }}">Edit</a>
-    <a class="small" href="{{ article.get_delete_url }}">Delete</a>
+    <p>{{article.content}}</p>
+    
+    {% if article.author.username == request.user.username %}
+        <div style="display: flex; justify-content: flex-end;">
+            <a class="small" style="margin-right: 1em;" href="{{ article.get_edit_url }}">Edit</a>
+            <a class="small" href="{{ article.get_delete_url }}">Delete</a>
+        </div>
+    {% endif %}
 </div>
+
+<b style="font-size: 2em">Comments</b>
+{% include "comments/comments_list.html" with comments=article.sorted_comment_set %}
+
+
+<b style="font-size: 1.5em">Write Comment</b>
+<form action="." method="POST">
+    {% csrf_token %}
+    {% include "form.html" %}
+    <button type="submit">Submit</button>
+</form>
 
 {% endblock %}

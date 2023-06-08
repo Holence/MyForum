@@ -25,3 +25,7 @@ class Account(models.Model):
 
     def get_avatar_url(self):
         return settings.MEDIA_URL + str(self.avatar)
+
+    @property
+    def sorted_article_set(self):
+        return self.user.article_set.order_by('updated')

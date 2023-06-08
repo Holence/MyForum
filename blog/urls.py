@@ -31,6 +31,7 @@ urlpatterns = [
     path('register/', register_view, name="register"),
     path('articles/', include("articles.urls")),
     path('account/', include("accounts.urls")),
+    path('comment/', include("comments.urls")),
 ]
 
 if settings.DEBUG:

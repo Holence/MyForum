@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django_htmx',
     'articles',
     'accounts',
+    'comments',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"

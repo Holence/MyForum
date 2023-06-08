@@ -1,0 +1,22 @@
+{% for comment in comments%}
+<div style="border-top: chocolate 2px solid; padding: 15px;">
+    <div style="display: flex; justify-content: space-between;">
+        {% include "accounts/nametag.html" with account=comment.user.account %}
+        
+        <div style="display: flex; align-items: flex-start;">
+            {{comment.timestamp}}
+        </div>
+    </div>
+
+    <br>
+    {{ comment.content }}
+
+    {% if comment.user.username == request.user.username %}
+        <div style="display: flex; justify-content: flex-end;">
+            <a class="small" href="{{ comment.get_delete_url }}">Delete</a>
+        </div>
+    {% endif %}
+    
+</div>
+<br>
+{% endfor %}

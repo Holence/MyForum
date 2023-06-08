@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required #需要登陆才能用
 from django.db.models import Q
 from .models import Article
 from .forms import ArticleForm
+from comments.forms import CommentForm
 # Create your views here.
 
 def have_permission(request, article):
@@ -23,11 +24,30 @@ def article_create_view(request):
     return render(request, "articles/edit.html", {"mode": "Create", "form": form})
 
 def article_detail_view(request, slug):
+
     article = Article.objects.get(slug=slug)
+        
+    if request.method=="GET":
+        form = CommentForm(data=None)
+        
+    elif request.method=="POST":
+        if request.user.is_authenticated:
+            form = CommentForm(data=request.POST)
+            if form.is_valid():
+                comment = form.save(commit=False)
+                comment.user = request.user
+                comment.article = article
+                comment.save()
+                return redirect(article.get_absolute_url())
+        else:
+            return redirect("login")
+    
     context={
-        "article": article
+        "article": article,
+        "form": form
     }
     return render(request, "articles/detail.html", context)
+    
 
 def article_search_view(request):
     query=request.GET.get("q")
@@ -67,7 +87,7 @@ def article_edit_view(request, slug):
             if form.is_valid():
                 form.save()
                 return redirect(article.get_absolute_url())
-        return render(request, "articles/edit.html", {"mode": "Edit", "form": form, "alert": False})
+        return render(request, "articles/edit.html", {"mode": "Edit", "form": form})
     else:
         return render(request, "alert.html", {"message": "You do not have permission to edit!"})
 
@@ -76,7 +96,7 @@ def article_delete_view(request, slug):
     article = Article.objects.get(slug=slug)
     if have_permission(request, article):
         if request.method=="GET":
-            return render(request, "articles/delete.html", {})
+            return render(request, "delete.html", {})
         if request.method=="POST":
             choice=request.POST.get("choice")
             if choice=="Yes":

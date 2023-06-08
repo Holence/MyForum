@@ -18,6 +18,8 @@ Account
 <p>Url: {{account.url}}</p>
 <p>Email: {{account.user.email}}</p>
 <p>Bio: {{account.bio}}</p>
-<p>Avatar: </p>
+
+<b style="font-size: 2em">Articles</b>
+{% include "articles/articles_list.html" with articles=account.sorted_article_set %}
 
 {% endblock %}

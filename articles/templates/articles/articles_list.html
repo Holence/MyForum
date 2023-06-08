@@ -1,7 +1,7 @@
 <ul>
-    {% for i in articles%}
+    {% for article in articles%}
     <li>
-        <a href="{{ i.get_absolute_url }}">{{i.title}} - {{i.author}}</a>
+        <a href="{{ article.get_absolute_url }}">{{article.title}} - {{article.author}}</a>
     </li>
     {% endfor %}
 </ul>

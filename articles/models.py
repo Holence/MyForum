@@ -6,9 +6,9 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Article(models.Model):
     
-    author = models.ForeignKey(User, blank=True, null=True, on_delete=models.DO_NOTHING)
+    author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     title = models.CharField(unique=True, max_length=128)
-    slug = models.SlugField(unique=True, blank=True, null=True, allow_unicode=True)
+    slug = models.SlugField(unique=True, allow_unicode=True)
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -31,6 +31,13 @@ class Article(models.Model):
             self.slug = self.slug+"_"+str(articles.count()+1)
     
         super().save(*args, **kwargs)
+    
+    @property
+    def sorted_comment_set(self):
+        return self.comment_set.order_by('timestamp')
+    
+    def __str__(self) -> str:
+        return self.title
 
 # Signal
 
