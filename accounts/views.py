@@ -34,9 +34,9 @@ def register_view(request):
         return redirect("home")
 
     if request.method=="GET":
-        form = UserCreationForm(None)
+        form = UserCreationForm(data=None)
     elif request.method=="POST":
-        form = UserCreationForm(request.POST)
+        form = UserCreationForm(data=request.POST)
         if form.is_valid():
             user = form.save()
             account = Account.objects.create(user=user)
@@ -68,11 +68,11 @@ def accounts_edit_view(request):
     # 而request.user也没有自带的copy函数，就只能用这个get_user弄一个出来了
     user = get_user(request)
     if request.method=="GET":
-        user_form = User_Form(None, instance=user)
-        account_form = Account_Form(None, instance=account)
+        user_form = User_Form(data=None, instance=user)
+        account_form = Account_Form(data=None, instance=account)
     elif request.method=="POST":
-        user_form = User_Form(request.POST, instance=user)
-        account_form = Account_Form(request.POST, instance=account)
+        user_form = User_Form(data=request.POST, instance=user)
+        account_form = Account_Form(data=request.POST, files=request.FILES,instance=account)
         if user_form.is_valid() and account_form.is_valid():
             user_form.save()
             account_form.save()

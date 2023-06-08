@@ -11,9 +11,9 @@ def have_permission(request, article):
 @login_required
 def article_create_view(request):
     if request.method=="GET":
-        form = ArticleForm()
+        form = ArticleForm(data=None)
     elif request.method=="POST":
-        form = ArticleForm(request.POST)
+        form = ArticleForm(data=request.POST)
         if form.is_valid():
             article=form.save(commit=False)
             article.author=request.user
@@ -61,9 +61,9 @@ def article_edit_view(request, slug):
     article = Article.objects.get(slug=slug)
     if have_permission(request, article):
         if request.method=="GET":
-            form = ArticleForm(None, instance=article)
+            form = ArticleForm(data=None, instance=article)
         elif request.method=="POST":
-            form = ArticleForm(request.POST, instance=article)
+            form = ArticleForm(data=request.POST, instance=article)
             if form.is_valid():
                 form.save()
                 return redirect(article.get_absolute_url())

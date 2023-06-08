@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    # Using WhiteNoise in development
+    "whitenoise.runserver_nostatic",
     'django.contrib.staticfiles',
     'crispy_forms',
     'crispy_bootstrap4',
@@ -149,6 +151,16 @@ STATICFILES_DIRS = [
 # 就需要提前使用
 # py .\manage.py collectstatic 指令去收集staticfile 到 STATIC_ROOT 中
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+if DEBUG:
+    # DEBUG=1的时候，如果设置成"/static/media/"，就会报错
+    # runserver can't serve media if MEDIA_URL is within STATIC_URL
+    # 所以就只能在这里设为"/media/"，然后再在urls.py中增加一个 static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    MEDIA_URL = "/media/"
+else:
+    MEDIA_URL = "/static/media/"
+
+MEDIA_ROOT = BASE_DIR / "staticfiles" / "media"
 
 # 这里用WhiteNoise提供staticfile
 # https://whitenoise.readthedocs.io/en/latest/django.html

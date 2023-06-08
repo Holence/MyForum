@@ -7,6 +7,7 @@ Account
 {% block content %}
 
 <h1>{{account.user.first_name}} {{account.user.last_name}}</h1>
+<img src="{{ account.get_avatar_url }}">
 <h2>@{{account.user}}</h2>
 
 {% if account.user.username == request.user.username %}
