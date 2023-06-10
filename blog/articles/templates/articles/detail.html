@@ -1,7 +1,23 @@
 {% extends "base.html" %}
 
+{% load static %}
+{% load martortags %}
+
 {% block title %}
 {{article.title}}
+{% endblock %}
+
+{% block css %}
+    <link href="{% static 'plugins/css/ace.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static 'plugins/js/highlight.min.js' %}" async></script>
+    <script>
+        $('.martor-preview pre').each(function(i, block){
+            hljs.highlightBlock(block);
+        });
+    </script>
 {% endblock %}
 
 {% block content %}
@@ -12,14 +28,17 @@
             <h1>{{article.title}}</h1>
         </div>
         <div style="display: flex; align-items: center;">
-            Created at: {{article.timestamp}}
+            Created at: {{ article.timestamp|date:"Y.m.d H:i" }}
             <br>
-            Updated at: {{article.updated}}
+            Updated at: {{ article.updated|date:"Y.m.d H:i" }}
         </div>
     </div>
+    
     {% include "accounts/nametag.html" with account=article.author.account %}
-
-    <p>{{article.content}}</p>
+    <hr />
+    <div class="martor-preview">
+        <p>{{ article.content|safe_markdown }}</p>
+    </div>
     
     {% if article.author.username == request.user.username %}
         <div style="display: flex; justify-content: flex-end;">
@@ -35,10 +54,6 @@
 
 
 <b style="font-size: 1.5em">Write Comment</b>
-<form action="." method="POST">
-    {% csrf_token %}
-    {% include "form.html" %}
-    <button type="submit">Submit</button>
-</form>
+{% include "comments/edit.html" %}
 
 {% endblock %}

@@ -24,14 +24,14 @@ class AccountForm(forms.ModelForm):
 
                 #validate content type
                 main, sub = avatar.content_type.split('/')
-                if not (main == 'image' and sub in ['jpeg', 'pjpeg', 'gif', 'png']):
+                if not (main == 'image' and sub in ['jpeg', 'jpg', 'pjpg', 'gif', 'png']):
                     raise forms.ValidationError(u'Please use a JPEG, '
                         'GIF or PNG image.')
 
                 #validate file size
                 if len(avatar) > (2 * 1024 * 1024):
                     raise forms.ValidationError(
-                        u'Avatar file size may not exceed 20k.')
+                        u'Avatar file size may not exceed 2Mb.')
 
             except AttributeError:
                 """

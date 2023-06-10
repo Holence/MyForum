@@ -1,7 +1,9 @@
 from django import forms
 from .models import Article
+from martor.fields import MartorFormField
 
 class ArticleForm(forms.ModelForm):
+    content = MartorFormField()
     class Meta:
         model = Article
         fields = ["title", "content"]

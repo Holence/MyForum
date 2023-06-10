@@ -28,13 +28,13 @@ def article_detail_view(request, slug):
     article = Article.objects.get(slug=slug)
         
     if request.method=="GET":
-        form = CommentForm(data=None)
+        comment_form = CommentForm(data=None)
         
     elif request.method=="POST":
         if request.user.is_authenticated:
-            form = CommentForm(data=request.POST)
-            if form.is_valid():
-                comment = form.save(commit=False)
+            comment_form = CommentForm(data=request.POST)
+            if comment_form.is_valid():
+                comment = comment_form.save(commit=False)
                 comment.user = request.user
                 comment.article = article
                 comment.save()
@@ -44,7 +44,7 @@ def article_detail_view(request, slug):
     
     context={
         "article": article,
-        "form": form
+        "comment_form": comment_form
     }
     return render(request, "articles/detail.html", context)
     

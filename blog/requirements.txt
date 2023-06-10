@@ -4,3 +4,4 @@ crispy-bootstrap4
 django-htmx
 Pillow
 django-dotenv
+martor

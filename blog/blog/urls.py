@@ -19,7 +19,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import home_view
+from .views import home_view, markdown_uploader
 
 from accounts.views import login_view, logout_view, register_view
 
@@ -32,6 +32,10 @@ urlpatterns = [
     path('articles/', include("articles.urls")),
     path('account/', include("accounts.urls")),
     path('comment/', include("comments.urls")),
+    
+    # 'martor/uploader/'得放在'martor/'的前面，优先级要高于martor内部设定的martor/uploader/的markdown_uploader函数
+    path('martor/uploader/', markdown_uploader, name="markdown_uploader_page"),
+    path('martor/', include('martor.urls')),
 ]
 
 if settings.DEBUG:

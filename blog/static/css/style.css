@@ -10,7 +10,7 @@
     border: 2px red solid;
 }
 
-.nav>a{
+.navbar>a{
     display: inline-block;
     color: chocolate;
     font-size: 2em;
@@ -18,7 +18,7 @@
     margin-right: 1em;
 }
 
-.nav>a:hover{
+.navbar>a:hover{
     color: rgb(230, 153, 46);
 }
 
