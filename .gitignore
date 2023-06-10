@@ -1,6 +1,7 @@
 .vscode/
 staticfiles/
 media/
+pki-validation/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

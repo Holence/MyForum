@@ -28,9 +28,7 @@ DEBUG = str(os.environ.get("DJANGO_DEBUG")) == "1"
 
 ALLOWED_HOSTS = ["*"]
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://127.0.0.1:8000",
-]
+CSRF_TRUSTED_ORIGINS = []
 if os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS'):
     CSRF_TRUSTED_ORIGINS.append(os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS'))
 
@@ -125,7 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
