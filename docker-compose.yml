@@ -1,10 +1,9 @@
-version: '3'
 
 services:
   blog:
     container_name: blog
     build: ./blog
-    command: python ./manage.py runserver 0.0.0.0:8000
+    command: python ./manage.py makemigrations && python ./manage.py migrate && python ./manage.py collectstatic --noinput && python ./manage.py runserver 0.0.0.0:8000
     volumes:
       - storage_volume:/app/storage
       - static_volume:/app/staticfiles
