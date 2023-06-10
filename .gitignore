@@ -2,6 +2,7 @@
 staticfiles/
 media/
 pki-validation/
+ssl/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
