@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ["*"]
 
 CSRF_TRUSTED_ORIGINS = []
 if os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS'):
-    CSRF_TRUSTED_ORIGINS.append(os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS'))
+    CSRF_TRUSTED_ORIGINS.extend(os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS').split(";"))
 
 # Application definition
 
@@ -91,10 +91,13 @@ WSGI_APPLICATION = 'blog.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+if not os.path.exists("./storage"):
+    os.makedirs("storage")
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'storage/db.sqlite3',
     }
 }
 
@@ -154,7 +157,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "/media/"
 
 # 动态的（用户上传的）文件的存储路径
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = BASE_DIR / "storage/media"
 
 ##################################
 

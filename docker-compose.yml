@@ -6,7 +6,8 @@ services:
     build: ./blog
     command: python ./manage.py runserver 0.0.0.0:8000
     volumes:
-      - static_volume:/app
+      - storage_volume:/app/storage
+      - static_volume:/app/staticfiles
     expose:
       - 8000
     env_file:
@@ -15,12 +16,14 @@ services:
     container_name: nginx
     build: ./nginx
     volumes:
-      - static_volume:/app
+      - storage_volume:/app/storage
+      - static_volume:/app/staticfiles
     ports:
-      - 80:80 # Nginx 外部端口80（http默认端口），内部端口80
+      # - 80:80 # Nginx 外部端口80（http默认端口），内部端口80
       - 443:443 # Nginx 外部端口443（https默认端口），内部端口443
     depends_on:
       - blog # depends_on 告诉up的时候应该先运行
 
 volumes:
+  storage_volume:
   static_volume:
