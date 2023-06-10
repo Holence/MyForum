@@ -29,7 +29,7 @@ class AccountForm(forms.ModelForm):
                         'GIF or PNG image.')
 
                 #validate file size
-                if len(avatar) > (10 * 1024 * 1024):
+                if len(avatar) > (2 * 1024 * 1024):
                     raise forms.ValidationError(
                         u'Avatar file size may not exceed 20k.')
 
