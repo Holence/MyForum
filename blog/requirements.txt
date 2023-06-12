@@ -5,3 +5,4 @@ django-htmx
 Pillow
 django-dotenv
 martor
+psycopg[binary]

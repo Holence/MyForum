@@ -5,24 +5,35 @@ services:
     build: ./blog
     command: bash -c "python ./manage.py makemigrations --noinput && python ./manage.py migrate --noinput && python ./manage.py collectstatic --noinput && python ./manage.py runserver 0.0.0.0:8000"
     volumes:
-      - storage_volume:/app/storage
+      - media_volume:/app/media
       - static_volume:/app/staticfiles
     expose:
       - 8000
     env_file:
       - ./.env
+    depends_on: # depends_on 告诉up的时候应该先运行
+      - nginx
+      - db 
   nginx:
     container_name: nginx
     build: ./nginx
     volumes:
-      - storage_volume:/app/storage
+      - media_volume:/app/media
       - static_volume:/app/staticfiles
     ports:
       # - 80:80 # Nginx 外部端口80（http默认端口），内部端口80
       - 443:443 # Nginx 外部端口443（https默认端口），内部端口443
-    depends_on:
-      - blog # depends_on 告诉up的时候应该先运行
+  db:
+    image: postgres:15
+    command: bash -c "psql --username '$POSTGRES_USER' --dbname '$POSTGRES_DB'"
+    volumes:
+      - postgres_volume:/var/lib/postgresql/data/
+    expose:
+      - 5432
+    env_file:
+      - ./.env
 
 volumes:
-  storage_volume:
+  media_volume:
   static_volume:
+  postgres_volume:

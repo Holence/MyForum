@@ -66,7 +66,7 @@ MARTOR_ENABLE_CONFIGS = {
     'mention': 'true',     # to enable/disable mention
     'jquery': 'true',       # to include/revoke jquery (require for admin default django)
     'living': 'false',      # to enable/disable live updates in preview
-    'spellcheck': 'true',  # to enable/disable spellcheck in form textareas
+    'spellcheck': 'false',  # to enable/disable spellcheck in form textareas
     'hljs': 'true',         # to enable/disable hljs highlighting in preview
 }
 
@@ -82,8 +82,8 @@ MARTOR_TOOLBAR_BUTTONS = [
 MARTOR_ENABLE_LABEL = False
 
 # Imgur API Keys
-MARTOR_IMGUR_CLIENT_ID = 'your-client-id'
-MARTOR_IMGUR_API_KEY   = 'your-api-key'
+# MARTOR_IMGUR_CLIENT_ID = 'your-client-id'
+# MARTOR_IMGUR_API_KEY   = 'your-api-key'
 CSRF_COOKIE_HTTPONLY = False
 # Markdownify
 MARTOR_MARKDOWNIFY_FUNCTION = 'martor.utils.markdownify' # default
@@ -124,7 +124,6 @@ MAX_IMAGE_UPLOAD_SIZE = 10485760
 MARTOR_SEARCH_USERS_URL = '/martor/search-user/' # default
 
 # Markdown Extensions
-# MARTOR_MARKDOWN_BASE_EMOJI_URL = 'https://www.webfx.com/tools/emoji-cheat-sheet/graphics/emojis/'     # from webfx
 MARTOR_MARKDOWN_BASE_EMOJI_URL = 'https://github.githubassets.com/images/icons/emoji/'                  # default from github
 
 MARTOR_MARKDOWN_BASE_MENTION_URL = '/account/profile/'                                      # please change this to your domain
@@ -143,11 +142,7 @@ ALLOWED_URL_SCHEMES = [
 
 # https://gist.github.com/mrmrs/7650266
 ALLOWED_HTML_TAGS = [
-    "a", "abbr", "b", "blockquote", "br", "cite", "code", "command",
-    "dd", "del", "dl", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6",
-    "hr", "i", "iframe", "img", "input", "ins", "kbd", "label", "legend",
-    "li", "ol", "optgroup", "option", "p", "pre", "small", "span", "strong",
-    "sub", "sup", "table", "tbody", "td", "tfoot", "th", "thead", "tr", "u", "ul"
+    "html","head","title","base","line","meta","style","script","noscript","template","body","section","nav","article","aside","h1","h2","h3","h4","h5","h6","header","footer","address","main","p","hr","pre","blockquote","ol","ul","li","dl","dt","dd","figure","figcaption","div","a","em","strong","small","s","cite","q","dfn","abbr","data","time","code","var","samp","kbd","sub","sup","i","b","u","mark","ruby","rt","rp","bdi","bdo","span","br","wbr","ins","del","img","iframe","embed","object","param","video","audio","source","track","canvas","map","area","svg","math","table","caption","colgroup","col","tbody","thead","tfoot","tr","td","th","form","fieldset","legend","label","input","button","select","datalist","optgroup","option","textarea","keygen","output","progress","meter","details","summary","menuitem","menu",
 ]
 
 # https://github.com/decal/werdlists/blob/master/html-words/html-attributes-list.txt
@@ -198,13 +193,14 @@ WSGI_APPLICATION = 'blog.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-if not os.path.exists("./storage"):
-    os.makedirs("storage")
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'storage/db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("POSTGRES_DATABASE"),
+        "USER": os.environ.get("POSTGRES_USER"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+        "HOST": os.environ.get("POSTGRES_HOST"),
+        "PORT": os.environ.get("POSTGRES_PORT"),
     }
 }
 
@@ -264,7 +260,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "/media/"
 
 # 动态的（用户上传的）文件的存储路径
-MEDIA_ROOT = BASE_DIR / "storage/media"
+MEDIA_ROOT = BASE_DIR / "media"
 
 ##################################
 
