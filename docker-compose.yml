@@ -24,6 +24,7 @@ services:
       # - 80:80 # Nginx 外部端口80（http默认端口），内部端口80
       - 443:443 # Nginx 外部端口443（https默认端口），内部端口443
   db:
+    container_name: postgres
     image: postgres:15
     volumes:
       - postgres_volume:/var/lib/postgresql/data/
