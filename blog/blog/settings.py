@@ -112,7 +112,7 @@ MARTOR_MARKDOWN_EXTENSION_CONFIGS = {}
 MARTOR_UPLOAD_URL = '/martor/uploader/' # default
 
 import time
-MARTOR_UPLOAD_PATH = 'md_img/{}'.format(time.strftime("%Y/%m/%d/"))
+MARTOR_UPLOAD_PATH = 'attachment/{}'.format(time.strftime("%Y/%m/%d/"))
 # 2.5MB - 2621440
 # 5MB - 5242880
 # 10MB - 10485760

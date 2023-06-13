@@ -12,5 +12,6 @@ class ArticleAdmin(admin.ModelAdmin):
     formfield_overrides = {
         models.TextField: {'widget': AdminMartorWidget},
     }
+    autocomplete_fields = ["upvotes", "downvotes"]
 
 admin.site.register(Article, ArticleAdmin)

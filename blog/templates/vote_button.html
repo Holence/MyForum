@@ -1,0 +1,40 @@
+{% comment %} Article和Comment复用这个双按钮组件，其中"thing"拥有upvotes和downvotes两个ManyToManyField {% endcomment %}
+<div id="vote_{{thing.get_unique_id}}" class="gap-2 d-md-flex justify-content-md-start">
+    <div id="upvote">
+        <form>
+            {% csrf_token %}
+            {% if request.user.account in thing.upvotes.all %}
+                <button class="btn btn-primary"
+                    type="submit"
+                    hx-vals='{"voting":"up"}'
+                    hx-trigger="click" hx-target="#vote_{{thing.get_unique_id}}" hx-post="{{ thing.get_vote_url }}"
+                >👍 {{ thing.upvotes.count }}</button>
+            {% else %}
+                <button class="btn btn-outline-primary"
+                    type="submit"
+                    hx-vals='{"voting":"up"}'
+                    hx-trigger="click" hx-target="#vote_{{thing.get_unique_id}}" hx-post="{{ thing.get_vote_url }}"
+                >👍 {{ thing.upvotes.count }}</button>
+            {% endif %}
+        </form>
+    </div>
+
+    <div id="downvote">
+        <form>
+            {% csrf_token %}
+            {% if request.user.account in thing.downvotes.all %}
+                <button class="btn btn-primary"
+                    type="submit"
+                    hx-vals='{"voting":"down"}'
+                    hx-trigger="click" hx-target="#vote_{{thing.get_unique_id}}" hx-post="{{ thing.get_vote_url }}"
+                >👎 {{ thing.downvotes.count }}</button>
+            {% else %}
+                <button class="btn btn-outline-primary"
+                    type="submit"
+                    hx-vals='{"voting":"down"}'
+                    hx-trigger="click" hx-target="#vote_{{thing.get_unique_id}}" hx-post="{{ thing.get_vote_url }}"
+                >👎 {{ thing.downvotes.count }}</button>
+            {% endif %}
+        </form>
+    </div>
+</div>

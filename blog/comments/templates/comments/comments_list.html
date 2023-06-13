@@ -6,33 +6,61 @@
 {% endblock %}
 
 {% block js %}
-    <script type="text/javascript" src="{% static 'plugins/js/highlight.min.js' %}" async></script>
+    <script type="text/javascript" src="{% static 'plugins/js/highlight.min.js' %}" defer></script>
     <script>
         $('.martor-preview pre').each(function(i, block){
             hljs.highlightBlock(block);
         });
     </script>
+    <script src="{% static 'js/htmx.min.js' %}" defer></script>
 {% endblock %}
 
-{% for comment in comments%}
-<div style="border-top: chocolate 2px solid; padding: 15px;">
-    <div style="display: flex; justify-content: space-between;">
-        {% include "accounts/nametag.html" with account=comment.user.account %}
-        
-        <div style="display: flex; align-items: flex-start;">
-            {{ comment.timestamp|date:"Y.m.d H:i" }}
-        </div>
-    </div>
-
-    <div class="martor-preview">
-        <p>{{ comment.content|safe_markdown }}</p>
-    </div>
-
-    {% if comment.user.username == request.user.username %}
-        <div style="display: flex; justify-content: flex-end;">
-            <a class="small" href="{{ comment.get_delete_url }}">Delete</a>
-        </div>
-    {% endif %}
+<div class="row justify-content-center">
     
+    {% if comments %}
+
+    {% for comment in comments%}
+    {% comment %} <div style="display: flex; justify-content: space-between;"> {% endcomment %}
+        <div class="col-10" style="border-left: chocolate 2px solid; margin: 20px;">
+            <div class="row">
+                <div class="col-2">
+                    {% include "accounts/nametag.html" with account=comment.author %}
+                </div>
+            
+                <div class="col-1 ms-auto">
+                    <div class="small">
+                        {{ comment.timestamp|date:"Y.m.d H:i" }}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="martor-preview">
+                <p>{{ comment.content|safe_markdown }}</p>
+            </div>
+            
+            
+            <div class="row">
+                <div class="col-2">
+                    {% include "vote_button.html" with thing=comment %}
+                </div>
+                
+                {% if comment.author == request.user.account %}
+                <div class="col-1 ms-auto">
+                    <a class="btn btn-outline-danger" href="{{ comment.get_delete_url }}">Delete</a>
+                </div>
+                {% endif %}
+            
+            </div>
+        </div>
+        
+    {% endfor %}
+        
+    {% else %}
+    <div class="col-10">
+        <b class="sorry">
+            还没有人留下评论……
+        </b>
+    </div>
+    {% endif %}
+        
 </div>
-{% endfor %}

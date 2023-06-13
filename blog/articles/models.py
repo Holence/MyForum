@@ -1,18 +1,20 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
-from django.contrib.auth.models import User
+from accounts.models import Account
 from martor.models import MartorField
 
 # Create your models here.
 class Article(models.Model):
     
-    author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    author = models.ForeignKey(Account, on_delete=models.DO_NOTHING, related_name="user_articles")
     title = models.CharField(unique=True, max_length=128)
     slug = models.SlugField(unique=True, allow_unicode=True)
     content = MartorField()
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    upvotes = models.ManyToManyField(Account, blank=True, related_name="upvote_articles")
+    downvotes = models.ManyToManyField(Account, blank=True, related_name="downvote_articles")
 
     def get_absolute_url(self):
         return reverse("articles:detail", kwargs={"slug": self.slug})
@@ -22,6 +24,12 @@ class Article(models.Model):
     
     def get_delete_url(self):
         return reverse("articles:delete", kwargs={"slug": self.slug})
+    
+    def get_vote_url(self):
+        return reverse("articles:vote", kwargs={"slug": self.slug})
+    
+    def get_unique_id(self):
+        return f"{self.__class__.__name__}_{self.id}"
     
     def save(self, *args, **kwargs):
         
@@ -35,7 +43,7 @@ class Article(models.Model):
     
     @property
     def sorted_comment_set(self):
-        return self.comment_set.order_by('timestamp')
+        return self.article_comments.order_by('timestamp')
     
     def __str__(self) -> str:
         return self.title

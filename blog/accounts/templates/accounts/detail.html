@@ -22,4 +22,7 @@ Account
 <b style="font-size: 2em">Articles</b>
 {% include "articles/articles_list.html" with articles=account.sorted_article_set %}
 
+<b style="font-size: 2em">Upvoted Articles</b>
+{% include "articles/articles_list.html" with articles=account.upvote_articles.all %}
+
 {% endblock %}

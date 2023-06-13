@@ -15,7 +15,7 @@ Articles
     Search Articles{% if q %} - "{{ q }}"{% endif %}
 </h1>
 
-<form action="{% url "articles:search" %}" method="GET">
+<form>
     <select
         name="type"
         id="search-type"

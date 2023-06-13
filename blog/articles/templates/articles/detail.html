@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block js %}
-    <script type="text/javascript" src="{% static 'plugins/js/highlight.min.js' %}" async></script>
+    <script type="text/javascript" src="{% static 'plugins/js/highlight.min.js' %}" defer></script>
     <script>
         $('.martor-preview pre').each(function(i, block){
             hljs.highlightBlock(block);
@@ -21,39 +21,54 @@
 {% endblock %}
 
 {% block content %}
-<div>
+<div style="margin-bottom: 2em;">
     
     <div style="display: flex; justify-content: space-between;">
-        <div style="display: flex; align-items: center;">
+        <div style="display: flex; align-items: flex-start;">
             <h1>{{article.title}}</h1>
         </div>
-        <div style="display: flex; align-items: center;">
-            Created at: {{ article.timestamp|date:"Y.m.d H:i" }}
-            <br>
-            Updated at: {{ article.updated|date:"Y.m.d H:i" }}
+        <div style="display: flex; flex-direction: column;">
+            <p class="small">Created at: {{ article.timestamp|date:"Y.m.d H:i" }}</p>
+            <p class="small">Updated at: {{ article.updated|date:"Y.m.d H:i" }}</p>
         </div>
     </div>
     
-    {% include "accounts/nametag.html" with account=article.author.account %}
+    {% include "accounts/nametag.html" with account=article.author %}
     <hr />
     <div class="martor-preview">
         <p>{{ article.content|safe_markdown }}</p>
     </div>
     
-    {% if article.author.username == request.user.username %}
-        <div style="display: flex; justify-content: flex-end;">
-            <a class="small" style="margin-right: 1em;" href="{{ article.get_edit_url }}">Edit</a>
-            <a class="small" href="{{ article.get_delete_url }}">Delete</a>
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
+                {% include "vote_button.html" with thing=article %}
+            </div>
+            
+            {% if article.author == request.user.account %}
+            <div class="col-2 ms-auto">
+                <a class="btn btn-outline-primary" href="{{ article.get_edit_url }}">Edit</a>
+                <a class="btn btn-outline-danger" href="{{ article.get_delete_url }}">Delete</a>
+            </div>
+            {% endif %}
+        
         </div>
-    {% endif %}
+    </div>
+
 </div>
 
-<b style="font-size: 2em">Comments</b>
-<br>
-{% include "comments/comments_list.html" with comments=article.sorted_comment_set %}
+<div>
+    <b class="row justify-content-center" style="font-size: 2em; border-bottom: chocolate 2px solid;">Comments</b>
 
+    {% include "comments/comments_list.html" with comments=article.sorted_comment_set %}
 
-<b style="font-size: 1.5em">Write Comment</b>
-{% include "comments/edit.html" %}
+    <b class="row justify-content-center" style="font-size: 1.5em;">Write Comment</b>
+
+    <div class="row justify-content-center">
+        <div class="col-10">
+            {% include "comments/edit.html" %}
+        </div>
+    </div>
+</div>
 
 {% endblock %}

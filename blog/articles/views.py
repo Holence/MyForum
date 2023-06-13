@@ -7,7 +7,7 @@ from comments.forms import CommentForm
 # Create your views here.
 
 def have_permission(request, article):
-    return request.user==article.author or request.user.is_superuser
+    return request.user==article.author.user or request.user.is_superuser
 
 @login_required
 def article_create_view(request):
@@ -17,7 +17,7 @@ def article_create_view(request):
         form = ArticleForm(data=request.POST)
         if form.is_valid():
             article=form.save(commit=False)
-            article.author=request.user
+            article.author=request.user.account
             article.save()
             return redirect(article.get_absolute_url())
         
@@ -26,7 +26,7 @@ def article_create_view(request):
 def article_detail_view(request, slug):
 
     article = Article.objects.get(slug=slug)
-        
+    
     if request.method=="GET":
         comment_form = CommentForm(data=None)
         
@@ -35,7 +35,7 @@ def article_detail_view(request, slug):
             comment_form = CommentForm(data=request.POST)
             if comment_form.is_valid():
                 comment = comment_form.save(commit=False)
-                comment.user = request.user
+                comment.author = request.user.account
                 comment.article = article
                 comment.save()
                 return redirect(article.get_absolute_url())
@@ -106,3 +106,33 @@ def article_delete_view(request, slug):
                 return redirect(article.get_absolute_url())
     else:
         return render(request, "alert.html", {"message": "You do not have permission to delete!"})
+
+@login_required
+def article_vote_view(request, slug):
+    # article和comment那边一模一样，修改时请注意两边都要修改
+    article = Article.objects.get(slug=slug)
+    
+    voting=request.POST.get("voting")
+    if voting == "up":
+        if request.user.account in article.downvotes.all():
+            article.downvotes.remove(request.user.account)
+        
+        if request.user.account in article.upvotes.all():
+            article.upvotes.remove(request.user.account)
+        else:
+            article.upvotes.add(request.user.account)
+        
+    elif voting == "down":
+        if request.user.account in article.upvotes.all():
+            article.upvotes.remove(request.user.account)
+        
+        if request.user.account in article.downvotes.all():
+            article.downvotes.remove(request.user.account)
+        else:
+            article.downvotes.add(request.user.account)
+    
+    context={
+        "thing": article,
+    }
+    if request.htmx:
+        return render(request, "vote_button.html", context)

@@ -12,8 +12,11 @@ Account
     {% csrf_token %}
     {% for form in forms %}
         {% include "form.html" with form=form %}
+        <br>
     {% endfor %}
-    <button type="submit">Save</button>
+    <button class="btn btn-outline-success" type="submit">
+        <i class="bi bi-save"></i> Save
+    </button>
 </form>
 
 {% endblock %}

@@ -6,7 +6,7 @@ from .models import Account
 class AccountForm(forms.ModelForm):
     class Meta:
         model = Account
-        exclude = ["user"]
+        fields = "__all__"
 
     def clean_avatar(self):
         avatar = self.cleaned_data['avatar']

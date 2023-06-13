@@ -1,7 +1,6 @@
-<ul>
-    {% for article in articles%}
-    <li>
-        <a href="{{ article.get_absolute_url }}">{{article.title}} - {{article.author}}</a>
-    </li>
-    {% endfor %}
-</ul>
+{% for article in articles%}
+<div>
+    <h2><a href="{{ article.get_absolute_url }}">{{article.title}} - {{article.author}}</a></h2>
+    <p>{{ article.content|slice:":200" }}</p>
+</div>
+{% endfor %}

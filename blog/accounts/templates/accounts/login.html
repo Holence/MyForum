@@ -11,6 +11,9 @@ Login
 <form method="POST">
     {% csrf_token %}
     {% include "form.html" %}
-    <button type="submit">Login</button>
+    <br>
+    <button class="btn btn-outline-success" type="submit">
+        <i class="bi bi-save"></i> Login
+    </button>
 </form>
 {% endblock %}

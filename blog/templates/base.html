@@ -37,7 +37,7 @@
                 
                 {% if request.user.is_authenticated %}
                 <div style="margin-bottom: 2em;">
-                        <label class="small" style="float: left; display: inline-block;">Welcome, <a href="{% url "accounts:detail" username=request.user.username %}">{{request.user.username}}</a></label>
+                        <label class="small" style="float: left; display: inline-block;">Welcome, <a href="{{ request.user.account.get_profile_url }}">{{request.user.username}}</a></label>
                         <a class="small" style="float: right; display: inline-block;" href="{% url "logout" %}">Logout</a>
                     </div>
                 {% endif %}

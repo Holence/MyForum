@@ -12,18 +12,18 @@ Create Articles
 {% endblock %}
 
 {% block js %}
-    <script type="text/javascript" src="{% static 'plugins/js/jquery.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'plugins/js/bootstrap.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'plugins/js/ace.js' %}" async></script>
-    <script type="text/javascript" src="{% static 'plugins/js/mode-markdown.js' %}" async></script>
-    <script type="text/javascript" src="{% static 'plugins/js/ext-language_tools.js' %}" async></script>
-    <script type="text/javascript" src="{% static 'plugins/js/theme-github.js' %}" async></script>
-    <script type="text/javascript" src="{% static 'plugins/js/typo.js' %}" async></script>
-    <script type="text/javascript" src="{% static 'plugins/js/spellcheck.js' %}" async></script>
-    <script type="text/javascript" src="{% static 'plugins/js/highlight.min.js' %}" async></script>
-    <script type="text/javascript" src="{% static 'plugins/js/resizable.min.js' %}" async></script>
-    <script type="text/javascript" src="{% static 'plugins/js/emojis.min.js' %}" async></script>
-    <script type="text/javascript" src="{% static 'martor/js/martor.bootstrap.min.js' %}" async></script>
+    <script type="text/javascript" src="{% static 'plugins/js/jquery.min.js' %}" defer></script>
+    <script type="text/javascript" src="{% static 'plugins/js/bootstrap.min.js' %}" defer></script>
+    <script type="text/javascript" src="{% static 'plugins/js/ace.js' %}" defer></script>
+    <script type="text/javascript" src="{% static 'plugins/js/mode-markdown.js' %}" defer></script>
+    <script type="text/javascript" src="{% static 'plugins/js/ext-language_tools.js' %}" defer></script>
+    <script type="text/javascript" src="{% static 'plugins/js/theme-github.js' %}" defer></script>
+    <script type="text/javascript" src="{% static 'plugins/js/typo.js' %}" defer></script>
+    <script type="text/javascript" src="{% static 'plugins/js/spellcheck.js' %}" defer></script>
+    <script type="text/javascript" src="{% static 'plugins/js/highlight.min.js' %}" defer></script>
+    <script type="text/javascript" src="{% static 'plugins/js/resizable.min.js' %}" defer></script>
+    <script type="text/javascript" src="{% static 'plugins/js/emojis.min.js' %}" defer></script>
+    <script type="text/javascript" src="{% static 'martor/js/martor.bootstrap.min.js' %}" defer></script>
 {% endblock %}
 
 {% block content %}
@@ -34,7 +34,9 @@ Create Articles
     {% csrf_token %}
     <div class="form-group">
     {% include "form.html" %}
-    <button type="submit">Submit</button>
+    <button class="btn btn-outline-success" type="submit">
+        <i class="bi bi-save"></i> Save
+    </button>
     </div>
 </form>
 

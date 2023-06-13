@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.forms.models import modelform_factory
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user, update_session_auth_hash
@@ -45,6 +46,7 @@ def register_view(request):
     
     return render(request, "accounts/register.html", {"form": form})
 
+@login_required
 def accounts_detail_view(request, username):
     if not request.user.is_authenticated:
         return redirect("home")
@@ -53,12 +55,13 @@ def accounts_detail_view(request, username):
 
     return render(request, "accounts/detail.html", {"account": account})
 
+@login_required
 def accounts_edit_view(request):
     if not request.user.is_authenticated:
         return redirect("home")
     
     User_Form = modelform_factory(User, fields=["username", "first_name", "last_name", "email"])
-    Account_Form = modelform_factory(Account, form=AccountForm, exclude=["user"])
+    Account_Form = modelform_factory(Account, form=AccountForm, exclude=["user", "following"])
     
     account = Account.objects.get(user=request.user)
     
@@ -76,10 +79,11 @@ def accounts_edit_view(request):
         if user_form.is_valid() and account_form.is_valid():
             user_form.save()
             account_form.save()
-            return redirect("accounts:detail", username=request.user.username)
+            return redirect(account.get_profile_url())
     
     return render(request, "accounts/edit.html", {"forms": [user_form, account_form]})
 
+@login_required
 def change_password_view(request):
     if not request.user.is_authenticated:
         return redirect("home")
@@ -91,6 +95,6 @@ def change_password_view(request):
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, form.user)
-            return redirect("accounts:detail", username=request.user.username)
+            return redirect(request.user.account.get_profile_url())
     
     return render(request, "accounts/edit.html", {"forms": [form]})

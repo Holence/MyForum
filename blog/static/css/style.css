@@ -43,3 +43,8 @@ small[id*='hint_id']{
 p[id*='error_']{
     color: red;
 }
+
+.sorry{
+    font-size: 24px;
+    color: rgb(100, 100, 100);
+}
