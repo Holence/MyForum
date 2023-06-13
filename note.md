@@ -33,4 +33,4 @@ createsuperuser
 docker exec -it blog python ./manage.py createsuperuser --noinput
 
 Backup
-docker run --rm --volumes-from nginx -v $(pwd):/backup ubuntu tar cvf /backup/backup.tar app/storage
+docker run --rm --volumes-from nginx -v $(pwd):/backup ubuntu tar cvf /backup/backup.tar app/

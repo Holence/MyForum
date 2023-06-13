@@ -119,7 +119,7 @@ MARTOR_UPLOAD_PATH = 'md_img/{}'.format(time.strftime("%Y/%m/%d/"))
 # 20MB - 20971520
 # 50MB - 52428800
 # 100MB 104857600
-MAX_IMAGE_UPLOAD_SIZE = 10485760
+MAX_IMAGE_UPLOAD_SIZE = 500 * 1024 * 1024 # 500MB
 
 MARTOR_SEARCH_USERS_URL = '/martor/search-user/' # default
 

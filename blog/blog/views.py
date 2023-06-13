@@ -31,19 +31,10 @@ def markdown_uploader(request):
     def is_ajax(request):
         return request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest"
 
-    def image_uploader(image):
-        image_types = [
-            'image/png', 'image/jpg',
-            'image/jpeg', 'image/pjpeg', 'image/gif'
-        ]
-        if image.content_type not in image_types:
-            data = json.dumps({
-                'status': 405,
-                'error': _('Bad image format.')
-            }, cls=LazyEncoder)
-            return data
-
-        if image.size > settings.MAX_IMAGE_UPLOAD_SIZE:
+    def uploader(file):
+        # 这里允许上传任何类型的文件
+        # 去除了文件类型的限制，更改了martor.bootstrap.js与martor.semantic.js中插入markdown的操作
+        if file.size > settings.MAX_IMAGE_UPLOAD_SIZE:
             to_MB = settings.MAX_IMAGE_UPLOAD_SIZE / (1024 * 1024)
             data = json.dumps({
                 'status': 405,
@@ -51,22 +42,22 @@ def markdown_uploader(request):
             }, cls=LazyEncoder)
             return data
 
-        img_uuid = "{0}-{1}".format(uuid.uuid4().hex[:10], image.name.replace(' ', '-'))
+        img_uuid = "{0}-{1}".format(uuid.uuid4().hex[:10], file.name.replace(' ', '-'))
         tmp_file = os.path.join(settings.MARTOR_UPLOAD_PATH, img_uuid)
-        def_path = default_storage.save(tmp_file, ContentFile(image.read()))
+        def_path = default_storage.save(tmp_file, ContentFile(file.read()))
         img_url = os.path.join(settings.MEDIA_URL, def_path)
-        print(img_url)
+
         data = json.dumps({
             'status': 200,
             'link': img_url,
-            'name': image.name
+            'name': file.name
         })
         return data
     
     if request.method == "POST" and is_ajax(request):
         if "markdown-image-upload" in request.FILES:
-            image = request.FILES["markdown-image-upload"]
-            response_data = image_uploader(image=image)
+            file = request.FILES["markdown-image-upload"]
+            response_data = uploader(file=file)
             return HttpResponse(response_data, content_type="application/json")
         return HttpResponse(_("Invalid request!"))
     return HttpResponse(_("Invalid request!"))

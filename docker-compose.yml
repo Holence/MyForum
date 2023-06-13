@@ -13,7 +13,7 @@ services:
       - ./.env
     depends_on: # depends_on 告诉up的时候应该先运行
       - nginx
-      - db 
+      - db
   nginx:
     container_name: nginx
     build: ./nginx
