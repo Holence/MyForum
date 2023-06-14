@@ -9,7 +9,7 @@ from .models import Account
 from .forms import AccountForm
 
 full_infopage_list=["Created Articles", "Upvoted Articles", "Downvoted Articles", "Upvoted Comments", "Downvoted Comments", "Following", "Follower"]
-restrict_infopage_list=["Created Articles", "Upvoted Articles", "Downvoted Articles", "Upvoted Comments", "Downvoted Comments", "Following", "Follower"]
+restrict_infopage_list=["Created Articles", "Upvoted Articles", "Upvoted Comments", "Following", "Follower"]
 
 # Create your views here.
 def login_view(request):
