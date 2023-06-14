@@ -57,9 +57,9 @@ def accounts_detail_view(request, username):
     account = Account.objects.get(user__username=username)
     
     if request.user.account!=account:
-        return render(request, "accounts/detail.html", {"account": account, "infopage_list": full_infopage_list})
-    else:
         return render(request, "accounts/detail.html", {"account": account, "infopage_list": restrict_infopage_list})
+    else:
+        return render(request, "accounts/detail.html", {"account": account, "infopage_list": full_infopage_list})
 
 @login_required
 def accounts_edit_view(request):
