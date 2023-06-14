@@ -59,3 +59,13 @@ img{
     height: 72px;
     width: 72px;
 }
+
+html {
+    overflow: scroll;
+}
+
+::-webkit-scrollbar {
+    height: 0px;
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}

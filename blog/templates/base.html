@@ -10,11 +10,14 @@
         
         {% block css %}
         {% endblock %}
+        <link href="{% static 'martor/css/martor.bootstrap.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+        <link href="{% static 'plugins/css/ace.min.css' %}" type="text/css" media="all" rel="stylesheet" />
         <link href="{% static 'plugins/css/bootstrap.min.css' %}" type="text/css" media="all" rel="stylesheet" />
         <link rel="stylesheet" href="{% static "css/style.css" %}">
 
         {% block js %}
         {% endblock %}
+        <script type="text/javascript" src="{% static 'plugins/js/highlight.min.js' %}" defer></script>
         <script src="{% static 'js/htmx.min.js' %}" defer></script>
     </head>
 

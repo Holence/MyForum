@@ -19,61 +19,23 @@
 <p>Email: {{account.user.email}}</p>
 <p>Bio: {{account.bio}}</p>
 
-<b style="font-size: 2em">Created Articles</b>
-{% include "articles/articles_list.html" with articles=account.sorted_article_set %}
+<ul class="nav nav-tabs">
+    {% for infopage in infopage_list %}
+        <li class="nav-item">
+            <form>
+                {% csrf_token %}
+                <button class="nav-link"
+                    type="submit"
+                    hx-vals='{"account":"{{account.user.username}}", "infopage": "{{infopage}}"}'
+                    hx-trigger="click" hx-target="#infopage_content" hx-post="{% url "accounts:infopage" %}"
+                >{{infopage}}</button>
+            </form>
+        </li>
+    {% endfor %}
+</ul>
 
-<br>
-
-<div class="row">
-    {% if account.user.username == request.user.username %}
-        <div class="col-6 pe-5">
-            <b style="font-size: 2em">Upvoted Articles</b>
-            {% include "articles/articles_list.html" with articles=account.upvote_articles.all %}
-        </div>
-        <div class="col-6 ps-5" style="border-left: chocolate 2px solid;">
-            <b style="font-size: 2em">Downvoted Articles</b>
-            {% include "articles/articles_list.html" with articles=account.downvote_articles.all %}
-        </div>
-    {% else %}
-        <div class="col">
-            <b style="font-size: 2em">Upvoted Articles</b>
-            {% include "articles/articles_list.html" with articles=account.upvote_articles.all %}
-        </div>
-    {% endif %}
-</div>
-
-<br>
-
-<div class="row">
-    {% if account.user.username == request.user.username %}
-        <div class="col-6 pe-5">
-            <b style="font-size: 2em">Upvoted Comments</b>
-            {% include "comments/comments_list.html" with comments=account.upvote_comments.all article_slug=None %}
-        </div>
-        <div class="col-6 ps-5" style="border-left: chocolate 2px solid;">
-            <b style="font-size: 2em">Downvoted Comments</b>
-            {% include "comments/comments_list.html" with comments=account.downvote_comments.all article_slug=None %}
-        </div>
-    {% else %}
-        <div class="col">
-            <b style="font-size: 2em">Upvoted Comments</b>
-            {% include "comments/comments_list.html" with comments=account.upvote_comments.all article_slug=None %}
-        </div>
-    {% endif %}
-</div>
-
-<br>
-
-<div class="row">
-    <div class="col-6 pe-5">
-        <b style="font-size: 2em">Following</b>
-        {% include "accounts/follow.html" with account_list=account.following.all %}
-    </div>
-    
-    <div class="col-6 ps-5" style="border-left: chocolate 2px solid;">
-        <b style="font-size: 2em">Follower</b>
-        {% include "accounts/follow.html" with account_list=account.follower.all %}
-    </div>
-</div>
+<div id="infopage_content">
+    {% include "articles/articles_list.html" with articles=account.sorted_article_set %}
+<div>
 
 {% endblock %}

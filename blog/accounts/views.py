@@ -8,6 +8,9 @@ from django.contrib.auth import get_user, update_session_auth_hash
 from .models import Account
 from .forms import AccountForm
 
+full_infopage_list=["Created Articles", "Upvoted Articles", "Downvoted Articles", "Upvoted Comments", "Downvoted Comments", "Following", "Follower"]
+restrict_infopage_list=["Created Articles", "Upvoted Articles", "Downvoted Articles", "Upvoted Comments", "Downvoted Comments", "Following", "Follower"]
+
 # Create your views here.
 def login_view(request):
     if request.user.is_authenticated:
@@ -52,8 +55,11 @@ def accounts_detail_view(request, username):
         return redirect("home")
     
     account = Account.objects.get(user__username=username)
-
-    return render(request, "accounts/detail.html", {"account": account})
+    
+    if request.user.account!=account:
+        return render(request, "accounts/detail.html", {"account": account, "infopage_list": full_infopage_list})
+    else:
+        return render(request, "accounts/detail.html", {"account": account, "infopage_list": restrict_infopage_list})
 
 @login_required
 def accounts_edit_view(request):
@@ -111,3 +117,27 @@ def accounts_follow_view(request, username):
     
     if request.htmx:
         return render(request, "follow_btn.html", {"account": account})
+
+@login_required
+def accounts_infopage_view(request):
+    username=request.POST.get("account")
+    account = Account.objects.get(user__username=username)
+    infopage=request.POST.get("infopage")
+
+    if infopage=="Created Articles":
+        return render(request, "articles/articles_list.html", {"articles": account.sorted_article_set})
+    if infopage=="Following":
+        return render(request, "accounts/accounts_list.html", {"accounts": account.following.all() })
+    if infopage=="Follower":
+        return render(request, "accounts/accounts_list.html", {"accounts": account.follower.all() })
+    if infopage=="Follower":
+        return render(request, "accounts/accounts_list.html", {"accounts": account.follower.all() })
+    if infopage=="Upvoted Articles":
+        return render(request, "articles/articles_list.html", {"articles": account.upvote_articles.all() })
+    if infopage=="Downvoted Articles":
+        return render(request, "articles/articles_list.html", {"articles": account.downvote_articles.all() })
+    if infopage=="Upvoted Comments":
+        return render(request, "comments/comments_list.html", {"comments": account.upvote_comments.all(), "article_slug": None })
+    if infopage=="Downvoted Comments":
+        return render(request, "comments/comments_list.html", {"comments": account.downvote_comments.all(), "article_slug": None })
+    
