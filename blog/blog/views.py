@@ -15,7 +15,7 @@ import uuid
 from django.conf import settings
 from django.http import HttpResponse
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.decorators import login_required
+from blog.decorators import login_required
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 import time

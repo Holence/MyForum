@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required #需要登陆才能用，会跳转到settings中的LOGIN_URL
+from blog.decorators import login_required
 from django.db.models import Q
 from .models import Article
 from .forms import ArticleForm
