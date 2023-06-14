@@ -1,14 +1,14 @@
 {% load static %}
 
 <div class="row mb-3">
-    <div style="width: 72px">
+    <div class="col-auto me-2" style="width: 72px;">
         {% if account.avatar %}
-        <a href="{{ account.get_absolute_url }}"><img src="{{ account.get_avatar_url }}" height="72px"; width=auto;></a>
+        <a href="{{ account.get_absolute_url }}"><img class="avatar" src="{{ account.get_avatar_url }}"></a>
         {% else %}
-        <a href="{{ account.get_absolute_url }}"><img src="{% static "img/avatar.svg" %}" height="72px"; width=auto;></a>
+        <a href="{{ account.get_absolute_url }}"><img class="avatar" src="{% static "img/avatar.svg" %}"></a>
         {% endif %}
     </div>
-    <div class="col-auto">
+    <div class="col-auto me-2">
         <div style="font-size: 2em;">{{account.user.first_name}} {{account.user.last_name}}</div>
         <div style="font-size: 1em;">@<a href="{{ account.get_absolute_url }}">{{account.user.username}}</a></div>
     </div>
