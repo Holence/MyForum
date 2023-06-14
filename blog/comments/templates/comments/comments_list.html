@@ -20,12 +20,11 @@
 {% comment %} Article Page {% endcomment %}
     {% for comment, offset in comments%}
         {% if comment.content %}
-            <div id="{{ comment.get_unique_id }}" class="col-10" style="border-left: chocolate 2px solid; margin: 20px; margin-left: {{offset}}px;">
-                <div class="col">
+            <div id="{{ comment.get_unique_id }}" class="col-8" style="border-left: chocolate 2px solid; margin: 20px; margin-left: {{offset}}px;">
+
+                <div class="col-auto">
                     {% include "accounts/nametag.html" with account=comment.author %}
-                </div>
-                
-                <div class="small">{{ comment.timestamp|date:"Y.m.d H:i" }}</div>
+                </div>                    
                 
                 <div class="martor-preview">
                     <p>{{ comment.content|safe_markdown }}</p>
@@ -59,12 +58,16 @@
                         <a class="btn btn-outline-danger btn-sm" href="{{ comment.get_delete_url }}">Delete</a>
                     </div>
                     {% endif %}
+
+                    <div class="col-auto ms-5">
+                        <div class="small">{{ comment.timestamp|date:"Y.m.d H:i" }}</div>
+                    </div>
                 
                 </div>
                 <div class="row" id="reply_to_{{comment.id}}"></div>
             </div>
         {% else %}
-            <div id="{{ comment.get_unique_id }}" class="col-10" style="border-left: chocolate 2px solid; margin: 20px; margin-left: {{offset}}px;">
+            <div id="{{ comment.get_unique_id }}" class="col-8" style="border-left: chocolate 2px solid; margin: 20px; margin-left: {{offset}}px;">
                 Deleted Content
             </div>
         {% endif %}
@@ -77,13 +80,11 @@
 <div class="row justify-content-center">
     {% for comment in comments%}
         {% if comment.content %}
-            <div id="{{ comment.get_unique_id }}" class="col-10" style="border-left: chocolate 2px solid; margin: 20px;">
+            <div id="{{ comment.get_unique_id }}" class="col-8" style="border-left: chocolate 2px solid; margin: 20px;">
                 
-                <div class="col">
+                <div class="col-auto">
                     {% include "accounts/nametag.html" with account=comment.author %}
                 </div>
-                
-                <div class="small">{{ comment.timestamp|date:"Y.m.d H:i" }}</div>
                 
                 <div class="martor-preview">
                     <p>{{ comment.content|safe_markdown }}</p>
@@ -103,7 +104,11 @@
                         <a class="btn btn-outline-danger btn-sm" href="{{ comment.get_delete_url }}">Delete</a>
                     </div>
                     {% endif %}
-                
+                    
+                    <div class="col-auto ms-5">
+                        <div class="small">{{ comment.timestamp|date:"Y.m.d H:i" }}</div>
+                    </div>
+                    
                 </div>
             </div>
         {% endif %}
