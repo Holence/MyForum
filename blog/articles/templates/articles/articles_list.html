@@ -1,6 +1,17 @@
+{% load martortags %}
 {% for article in articles%}
-<div>
-    <h2><a href="{{ article.get_absolute_url }}">{{article.title}} - {{article.author}}</a></h2>
-    <p>{{ article.content|slice:":200" }}</p>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1><a href="{{ article.get_absolute_url }}">{{article.title}} - {{article.author}}</a></h1>
+        </div>
+        <div class="col-2 ms-auto">
+            <p class="small">Created at: {{ article.timestamp|date:"Y.m.d H:i" }}</p>
+            <p class="small">Updated at: {{ article.updated|date:"Y.m.d H:i" }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <p>{{ article.content|slice:":200"|safe_markdown }}</p>
+    </div>
 </div>
 {% endfor %}

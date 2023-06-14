@@ -27,27 +27,13 @@ def article_detail_view(request, slug):
 
     article = Article.objects.get(slug=slug)
     
-    if request.method=="GET":
-        comment_form = CommentForm(data=None)
-        
-    elif request.method=="POST":
-        if request.user.is_authenticated:
-            comment_form = CommentForm(data=request.POST)
-            if comment_form.is_valid():
-                comment = comment_form.save(commit=False)
-                comment.author = request.user.account
-                comment.article = article
-                comment.save()
-                return redirect(article.get_absolute_url())
-        else:
-            return redirect("login")
+    comment_form = CommentForm(data=None)
     
     context={
         "article": article,
         "comment_form": comment_form
     }
     return render(request, "articles/detail.html", context)
-    
 
 def article_search_view(request):
     query=request.GET.get("q")

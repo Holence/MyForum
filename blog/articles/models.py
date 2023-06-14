@@ -7,7 +7,7 @@ from martor.models import MartorField
 # Create your models here.
 class Article(models.Model):
     
-    author = models.ForeignKey(Account, on_delete=models.DO_NOTHING, related_name="user_articles")
+    author = models.ForeignKey(Account, on_delete=models.DO_NOTHING, blank=True, null=True, related_name="user_articles")
     title = models.CharField(unique=True, max_length=128)
     slug = models.SlugField(unique=True, allow_unicode=True)
     content = MartorField()
@@ -41,10 +41,27 @@ class Article(models.Model):
     
         super().save(*args, **kwargs)
     
-    @property
-    def sorted_comment_set(self):
-        return self.article_comments.order_by('timestamp')
-    
+    def get_comment_list(self):
+        
+        comments = []
+        def deepin(comment, offset):
+            if not comment.content:
+                if comment.reply.all():
+                    # 删除的评论，且有被回复，则显示（Deleted Content）
+                    comments.append([comment, offset])
+            else:
+                comments.append([comment, offset])
+            
+            if comment.reply.all():
+                for reply in comment.reply.all():
+                    deepin(reply, offset+80)
+
+        offset=20
+        for comment in self.article_comments.order_by('timestamp'):
+            if not comment.reply_to:
+                deepin(comment, offset)
+        return comments
+
     def __str__(self) -> str:
         return self.title
 

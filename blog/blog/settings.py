@@ -111,8 +111,7 @@ MARTOR_MARKDOWN_EXTENSION_CONFIGS = {}
 # Markdown urls
 MARTOR_UPLOAD_URL = '/martor/uploader/' # default
 
-import time
-MARTOR_UPLOAD_PATH = 'attachment/{}'.format(time.strftime("%Y/%m/%d/"))
+MARTOR_UPLOAD_PATH = 'attachment/'
 # 2.5MB - 2621440
 # 5MB - 5242880
 # 10MB - 10485760
@@ -121,7 +120,7 @@ MARTOR_UPLOAD_PATH = 'attachment/{}'.format(time.strftime("%Y/%m/%d/"))
 # 100MB 104857600
 MAX_IMAGE_UPLOAD_SIZE = 500 * 1024 * 1024 # 500MB
 
-MARTOR_SEARCH_USERS_URL = '/martor/search-user/' # default
+MARTOR_SEARCH_USERS_URL = '/account/profile/' # default
 
 # Markdown Extensions
 MARTOR_MARKDOWN_BASE_EMOJI_URL = 'https://github.githubassets.com/images/icons/emoji/'                  # default from github

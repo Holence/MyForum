@@ -48,16 +48,16 @@
     {% if account.user.username == request.user.username %}
         <div class="col-6 pe-5">
             <b style="font-size: 2em">Upvoted Comments</b>
-            {% include "comments/comments_list.html" with comments=account.upvote_comments.all %}
+            {% include "comments/comments_list.html" with comments=account.upvote_comments.all article_slug=None %}
         </div>
         <div class="col-6 ps-5" style="border-left: chocolate 2px solid;">
             <b style="font-size: 2em">Downvoted Comments</b>
-            {% include "comments/comments_list.html" with comments=account.downvote_comments.all %}
+            {% include "comments/comments_list.html" with comments=account.downvote_comments.all article_slug=None %}
         </div>
     {% else %}
         <div class="col">
             <b style="font-size: 2em">Upvoted Comments</b>
-            {% include "comments/comments_list.html" with comments=account.upvote_comments.all %}
+            {% include "comments/comments_list.html" with comments=account.upvote_comments.all article_slug=None %}
         </div>
     {% endif %}
 </div>

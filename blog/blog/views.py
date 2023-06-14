@@ -2,7 +2,7 @@ from django.shortcuts import render
 from articles.models import Article
 
 def home_view(request):
-    articles = Article.objects.all()
+    articles = Article.objects.all().order_by("-updated")
     context={
         "articles": articles
     }
@@ -18,7 +18,7 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
-
+import time
 from martor.utils import LazyEncoder
 
 @login_required
@@ -43,7 +43,7 @@ def markdown_uploader(request):
             return data
 
         img_uuid = "{0}-{1}".format(uuid.uuid4().hex[:10], file.name.replace(' ', '-'))
-        tmp_file = os.path.join(settings.MARTOR_UPLOAD_PATH, img_uuid)
+        tmp_file = os.path.join(settings.MARTOR_UPLOAD_PATH+"{}".format(time.strftime("%Y/%m/%d/")), img_uuid)
         def_path = default_storage.save(tmp_file, ContentFile(file.read()))
         img_url = os.path.join(settings.MEDIA_URL, def_path)
 

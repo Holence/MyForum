@@ -37,7 +37,7 @@ class Account(models.Model):
 
     @property
     def sorted_article_set(self):
-        return self.user_articles.order_by('updated')
+        return self.user_articles.order_by('-updated')
 
     def __str__(self) -> str:
         return self.user.username

@@ -8,7 +8,7 @@ from martor.widgets import AdminMartorWidget
 class CommentAdmin(admin.ModelAdmin):
     list_display = ["content", "article", "author", "timestamp"]
     search_fields = ["content"]
-    raw_id_fields = ["article", "author"]
+    raw_id_fields = ["article", "author", "reply_to"]
     formfield_overrides = {
         models.TextField: {'widget': AdminMartorWidget},
     }

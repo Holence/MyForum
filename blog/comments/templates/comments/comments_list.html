@@ -14,40 +14,100 @@
     </script>
 {% endblock %}
 
-<div class="row justify-content-center">
+{% if article_slug %}
 
-    {% for comment in comments%}
-    {% comment %} <div style="display: flex; justify-content: space-between;"> {% endcomment %}
-        <div id="{{ comment.get_unique_id }}" class="col-10" style="border-left: chocolate 2px solid; margin: 20px;">
-            
-            <div class="col">
-                {% include "accounts/nametag.html" with account=comment.author %}
-            </div>
-            
-            <div class="small">{{ comment.timestamp|date:"Y.m.d H:i" }}</div>
-            
-            <div class="martor-preview">
-                <p>{{ comment.content|safe_markdown }}</p>
-            </div>
-            
-            <div class="row">
-                <div class="col-auto">
-                    {% include "vote_btn.html" with thing=comment %}
+<div class="row justify-content-center">
+{% comment %} Article Page {% endcomment %}
+    {% for comment, offset in comments%}
+        {% if comment.content %}
+            <div id="{{ comment.get_unique_id }}" class="col-10" style="border-left: chocolate 2px solid; margin: 20px; margin-left: {{offset}}px;">
+                <div class="col">
+                    {% include "accounts/nametag.html" with account=comment.author %}
                 </div>
                 
-                <div class="col-auto me-auto">
-                    <a class="btn btn-outline-success btn-sm" href="{{ comment.get_absolute_url }}">🔗Link</a>
+                <div class="small">{{ comment.timestamp|date:"Y.m.d H:i" }}</div>
+                
+                <div class="martor-preview">
+                    <p>{{ comment.content|safe_markdown }}</p>
                 </div>
                 
-                {% if comment.author == request.user.account %}
-                <div class="col-auto">
-                    <a class="btn btn-outline-danger btn-sm" href="{{ comment.get_delete_url }}">Delete</a>
+                <div class="gap-2 d-md-flex justify-content-md-start">
+                    <div class="col-auto">
+                        {% include "vote_btn.html" with thing=comment %}
+                    </div>
+                    
+                    <div class="col-auto">
+                        <form>
+                            {% csrf_token %}
+                            <button class="btn btn-outline-success btn-sm"
+                                type="submit"
+                                hx-vals='{
+                                    "article_slug":"{{article_slug}}",
+                                    "reply_to_id":"{{comment.id}}"
+                                }'
+                                hx-trigger="click" hx-target="#reply_to_{{comment.id}}" hx-post="{% url "comments:reply" %}"
+                            >📧Reply</button>
+                        </form>
+                    </div>
+                    
+                    <div class="col-auto">
+                        <a class="btn btn-outline-success btn-sm" href="{{ comment.get_absolute_url }}">🔗Link</a>
+                    </div>
+                    
+                    {% if comment.author == request.user.account %}
+                    <div class="col-auto">
+                        <a class="btn btn-outline-danger btn-sm" href="{{ comment.get_delete_url }}">Delete</a>
+                    </div>
+                    {% endif %}
+                
                 </div>
-                {% endif %}
-            
+                <div class="row" id="reply_to_{{comment.id}}"></div>
             </div>
-        </div>
-        
-    {% endfor %}
-        
+        {% else %}
+            <div id="{{ comment.get_unique_id }}" class="col-10" style="border-left: chocolate 2px solid; margin: 20px; margin-left: {{offset}}px;">
+                Deleted Content
+            </div>
+        {% endif %}
+    {% endfor %}  
 </div>
+
+{% else %}
+{% comment %} Profile Page {% endcomment %}
+
+<div class="row justify-content-center">
+    {% for comment in comments%}
+        {% if comment.content %}
+            <div id="{{ comment.get_unique_id }}" class="col-10" style="border-left: chocolate 2px solid; margin: 20px;">
+                
+                <div class="col">
+                    {% include "accounts/nametag.html" with account=comment.author %}
+                </div>
+                
+                <div class="small">{{ comment.timestamp|date:"Y.m.d H:i" }}</div>
+                
+                <div class="martor-preview">
+                    <p>{{ comment.content|safe_markdown }}</p>
+                </div>
+                
+                <div class="gap-2 d-md-flex justify-content-md-start">
+                    <div class="col-auto">
+                        {% include "vote_btn.html" with thing=comment %}
+                    </div>
+                    
+                    <div class="col-auto">
+                        <a class="btn btn-outline-success btn-sm" href="{{ comment.get_absolute_url }}">🔗Link</a>
+                    </div>
+                    
+                    {% if comment.author == request.user.account %}
+                    <div class="col-auto">
+                        <a class="btn btn-outline-danger btn-sm" href="{{ comment.get_delete_url }}">Delete</a>
+                    </div>
+                    {% endif %}
+                
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+{% endif %}

@@ -62,11 +62,11 @@
 <div>
     <b class="row justify-content-center" style="font-size: 2em; border-bottom: chocolate 2px solid;">Comments</b>
 
-    {% include "comments/comments_list.html" with comments=article.sorted_comment_set %}
+    {% include "comments/comments_list.html" with comments=article.get_comment_list article_slug=article.slug %}
 
     <b class="row justify-content-center" style="font-size: 1.5em;">Write Comment</b>
 
-    {% include "comments/edit.html" %}
+    {% include "comments/edit.html" with article_slug=article.slug reply_to_id="None" %}
     
 </div>
 
