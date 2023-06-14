@@ -35,20 +35,22 @@
     
     {% include "accounts/nametag.html" with account=article.author %}
     <hr />
-    <div class="martor-preview">
-        <p>{{ article.content|safe_markdown }}</p>
-    </div>
-    
     <div class="container">
         <div class="row">
-            <div class="col-2">
-                {% include "vote_button.html" with thing=article %}
+            <div class="martor-preview">
+                <p>{{ article.content|safe_markdown }}</p>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-auto me-auto">
+                {% include "vote_btn.html" with thing=article %}
             </div>
             
             {% if article.author == request.user.account %}
-            <div class="col-2 ms-auto">
-                <a class="btn btn-outline-primary" href="{{ article.get_edit_url }}">Edit</a>
-                <a class="btn btn-outline-danger" href="{{ article.get_delete_url }}">Delete</a>
+            <div class="col-auto">
+                <a class="btn btn-outline-primary btn-sm" href="{{ article.get_edit_url }}">Edit</a>
+                <a class="btn btn-outline-danger btn-sm" href="{{ article.get_delete_url }}">Delete</a>
             </div>
             {% endif %}
         
@@ -64,11 +66,8 @@
 
     <b class="row justify-content-center" style="font-size: 1.5em;">Write Comment</b>
 
-    <div class="row justify-content-center">
-        <div class="col-10">
-            {% include "comments/edit.html" %}
-        </div>
-    </div>
+    {% include "comments/edit.html" %}
+    
 </div>
 
 {% endblock %}

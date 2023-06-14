@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Account
+{{account.user.username}}'s Profile
 {% endblock %}
 
 {% block content %}
@@ -19,12 +19,61 @@ Account
 <p>Email: {{account.user.email}}</p>
 <p>Bio: {{account.bio}}</p>
 
-<b style="font-size: 2em">Articles</b>
+<b style="font-size: 2em">Created Articles</b>
 {% include "articles/articles_list.html" with articles=account.sorted_article_set %}
 
 <br>
 
-<b style="font-size: 2em">Upvoted Articles</b>
-{% include "articles/articles_list.html" with articles=account.upvote_articles.all %}
+<div class="row">
+    {% if account.user.username == request.user.username %}
+        <div class="col-6 pe-5">
+            <b style="font-size: 2em">Upvoted Articles</b>
+            {% include "articles/articles_list.html" with articles=account.upvote_articles.all %}
+        </div>
+        <div class="col-6 ps-5" style="border-left: chocolate 2px solid;">
+            <b style="font-size: 2em">Downvoted Articles</b>
+            {% include "articles/articles_list.html" with articles=account.downvote_articles.all %}
+        </div>
+    {% else %}
+        <div class="col">
+            <b style="font-size: 2em">Upvoted Articles</b>
+            {% include "articles/articles_list.html" with articles=account.upvote_articles.all %}
+        </div>
+    {% endif %}
+</div>
+
+<br>
+
+<div class="row">
+    {% if account.user.username == request.user.username %}
+        <div class="col-6 pe-5">
+            <b style="font-size: 2em">Upvoted Comments</b>
+            {% include "comments/comments_list.html" with comments=account.upvote_comments.all %}
+        </div>
+        <div class="col-6 ps-5" style="border-left: chocolate 2px solid;">
+            <b style="font-size: 2em">Downvoted Comments</b>
+            {% include "comments/comments_list.html" with comments=account.downvote_comments.all %}
+        </div>
+    {% else %}
+        <div class="col">
+            <b style="font-size: 2em">Upvoted Comments</b>
+            {% include "comments/comments_list.html" with comments=account.upvote_comments.all %}
+        </div>
+    {% endif %}
+</div>
+
+<br>
+
+<div class="row">
+    <div class="col-6 pe-5">
+        <b style="font-size: 2em">Following</b>
+        {% include "accounts/follow.html" with account_list=account.following.all %}
+    </div>
+    
+    <div class="col-6 ps-5" style="border-left: chocolate 2px solid;">
+        <b style="font-size: 2em">Follower</b>
+        {% include "accounts/follow.html" with account_list=account.follower.all %}
+    </div>
+</div>
 
 {% endblock %}

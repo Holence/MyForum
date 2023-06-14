@@ -4,15 +4,15 @@
         <form>
             {% csrf_token %}
             {% if request.user.account in thing.upvotes.all %}
-                <button class="btn btn-primary"
+                <button class="btn btn-primary btn-sm"
                     type="submit"
-                    hx-vals='{"voting":"up"}'
+                    hx-vals='{"voting":"up_0"}'
                     hx-trigger="click" hx-target="#vote_{{thing.get_unique_id}}" hx-post="{{ thing.get_vote_url }}"
                 >👍 {{ thing.upvotes.count }}</button>
             {% else %}
-                <button class="btn btn-outline-primary"
+                <button class="btn btn-outline-primary btn-sm"
                     type="submit"
-                    hx-vals='{"voting":"up"}'
+                    hx-vals='{"voting":"up_1"}'
                     hx-trigger="click" hx-target="#vote_{{thing.get_unique_id}}" hx-post="{{ thing.get_vote_url }}"
                 >👍 {{ thing.upvotes.count }}</button>
             {% endif %}
@@ -23,15 +23,15 @@
         <form>
             {% csrf_token %}
             {% if request.user.account in thing.downvotes.all %}
-                <button class="btn btn-primary"
+                <button class="btn btn-primary btn-sm"
                     type="submit"
-                    hx-vals='{"voting":"down"}'
+                    hx-vals='{"voting":"down_0"}'
                     hx-trigger="click" hx-target="#vote_{{thing.get_unique_id}}" hx-post="{{ thing.get_vote_url }}"
                 >👎 {{ thing.downvotes.count }}</button>
             {% else %}
-                <button class="btn btn-outline-primary"
+                <button class="btn btn-outline-primary btn-sm"
                     type="submit"
-                    hx-vals='{"voting":"down"}'
+                    hx-vals='{"voting":"down_1"}'
                     hx-trigger="click" hx-target="#vote_{{thing.get_unique_id}}" hx-post="{{ thing.get_vote_url }}"
                 >👎 {{ thing.downvotes.count }}</button>
             {% endif %}

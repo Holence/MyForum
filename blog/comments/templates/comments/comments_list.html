@@ -12,41 +12,36 @@
             hljs.highlightBlock(block);
         });
     </script>
-    <script src="{% static 'js/htmx.min.js' %}" defer></script>
 {% endblock %}
 
 <div class="row justify-content-center">
-    
-    {% if comments %}
 
     {% for comment in comments%}
     {% comment %} <div style="display: flex; justify-content: space-between;"> {% endcomment %}
-        <div class="col-10" style="border-left: chocolate 2px solid; margin: 20px;">
-            <div class="row">
-                <div class="col-2">
-                    {% include "accounts/nametag.html" with account=comment.author %}
-                </div>
+        <div id="{{ comment.get_unique_id }}" class="col-10" style="border-left: chocolate 2px solid; margin: 20px;">
             
-                <div class="col-1 ms-auto">
-                    <div class="small">
-                        {{ comment.timestamp|date:"Y.m.d H:i" }}
-                    </div>
-                </div>
+            <div class="col">
+                {% include "accounts/nametag.html" with account=comment.author %}
             </div>
+            
+            <div class="small">{{ comment.timestamp|date:"Y.m.d H:i" }}</div>
             
             <div class="martor-preview">
                 <p>{{ comment.content|safe_markdown }}</p>
             </div>
             
-            
             <div class="row">
-                <div class="col-2">
-                    {% include "vote_button.html" with thing=comment %}
+                <div class="col-auto">
+                    {% include "vote_btn.html" with thing=comment %}
+                </div>
+                
+                <div class="col-auto me-auto">
+                    <a class="btn btn-outline-success btn-sm" href="{{ comment.get_absolute_url }}">🔗Link</a>
                 </div>
                 
                 {% if comment.author == request.user.account %}
-                <div class="col-1 ms-auto">
-                    <a class="btn btn-outline-danger" href="{{ comment.get_delete_url }}">Delete</a>
+                <div class="col-auto">
+                    <a class="btn btn-outline-danger btn-sm" href="{{ comment.get_delete_url }}">Delete</a>
                 </div>
                 {% endif %}
             
@@ -54,13 +49,5 @@
         </div>
         
     {% endfor %}
-        
-    {% else %}
-    <div class="col-10">
-        <b class="sorry">
-            还没有人留下评论……
-        </b>
-    </div>
-    {% endif %}
         
 </div>

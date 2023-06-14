@@ -21,12 +21,16 @@
     <script type="text/javascript" src="{% static 'martor/js/martor.bootstrap.min.js' %}" defer></script>
 {% endblock %}
 
-<form clss="form" action="." method="POST">
-    {% csrf_token %}
-    <div class="form-group">
-    {% include "form.html" with form=comment_form %}
-    <button class="btn btn-outline-success" type="submit">
-        <i class="bi bi-save"></i> Submit
-    </button>
+<div class="row justify-content-center">
+    <div class="col-10">
+        <form clss="form" action="." method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+            {% include "form.html" with form=comment_form %}
+            <button class="btn btn-outline-success" type="submit">
+                <i class="bi bi-save"></i> Submit
+            </button>
+            </div>
+        </form>        
     </div>
-</form>
+</div>

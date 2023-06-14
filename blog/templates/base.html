@@ -15,10 +15,11 @@
 
         {% block js %}
         {% endblock %}
+        <script src="{% static 'js/htmx.min.js' %}" defer></script>
     </head>
 
-    <body style="display: flex; justify-content: center; margin-top: 1em;">
-        <div style="width: 65%;">
+    <body style="display: flex; justify-content: center; margin-top: 1em; padding-bottom: 20em;">
+        <div style="width: 75%;">
             <div style="padding-bottom: 1em;">
                 <div class="navbar" style="border-bottom: chocolate 2px solid; margin-bottom: 0.5em;">
                     <a href="{% url "home" %}">Home</a>

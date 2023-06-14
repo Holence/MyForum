@@ -13,6 +13,9 @@ class Comment(models.Model):
     upvotes = models.ManyToManyField(Account, blank=True, related_name="upvote_comments")
     downvotes = models.ManyToManyField(Account, blank=True, related_name="downvote_comments")
 
+    def get_absolute_url(self):
+        return self.article.get_absolute_url()+"#"+self.get_unique_id()
+    
     def get_delete_url(self):
         return reverse("comments:delete", kwargs={"id": self.id})
 

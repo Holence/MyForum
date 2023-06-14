@@ -98,3 +98,16 @@ def change_password_view(request):
             return redirect(request.user.account.get_profile_url())
     
     return render(request, "accounts/edit.html", {"forms": [form]})
+
+@login_required
+def accounts_follow_view(request, username):
+    account = Account.objects.get(user__username=username)
+    
+    follow=request.POST.get("follow")
+    if follow == "0":
+        request.user.account.following.remove(account)
+    elif follow == "1":
+        request.user.account.following.add(account)
+    
+    if request.htmx:
+        return render(request, "follow_btn.html", {"account": account})

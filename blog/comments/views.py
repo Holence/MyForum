@@ -26,26 +26,18 @@ def comment_vote_view(request, id):
     comment = Comment.objects.get(id=id)
 
     voting=request.POST.get("voting")
-    if voting == "up":
+    if voting == "up_0":
+        comment.upvotes.remove(request.user.account)
+    elif voting == "up_1":
         if request.user.account in comment.downvotes.all():
             comment.downvotes.remove(request.user.account)
-        
+        comment.upvotes.add(request.user.account)
+    elif voting == "down_0":
+        comment.downvotes.remove(request.user.account)
+    elif voting == "down_1":
         if request.user.account in comment.upvotes.all():
             comment.upvotes.remove(request.user.account)
-        else:
-            comment.upvotes.add(request.user.account)
-        
-    elif voting == "down":
-        if request.user.account in comment.upvotes.all():
-            comment.upvotes.remove(request.user.account)
-        
-        if request.user.account in comment.downvotes.all():
-            comment.downvotes.remove(request.user.account)
-        else:
-            comment.downvotes.add(request.user.account)
+        comment.downvotes.add(request.user.account)
     
-    context={
-        "thing": comment,
-    }
     if request.htmx:
-        return render(request, "vote_button.html", context)
+        return render(request, "vote_btn.html", {"thing": comment})

@@ -53,17 +53,21 @@ def article_search_view(request):
     query=request.GET.get("q")
     seach_type=request.GET.get("type")
     if query:
-        if seach_type=="all":
+        if seach_type=="All":
             articles = Article.objects.filter(
                 Q(title__icontains=query) | Q(content__icontains=query)
             )
-        elif seach_type=="title":
+        elif seach_type=="Title":
             articles = Article.objects.filter(
                 Q(title__icontains=query)
             )
-        elif seach_type=="content":
+        elif seach_type=="Content":
             articles = Article.objects.filter(
                 Q(content__icontains=query)
+            )
+        elif seach_type=="Author":
+            articles = Article.objects.filter(
+                Q(author__user__username__icontains=query)
             )
     else:
         articles = None
@@ -113,26 +117,18 @@ def article_vote_view(request, slug):
     article = Article.objects.get(slug=slug)
     
     voting=request.POST.get("voting")
-    if voting == "up":
+    if voting == "up_0":
+        article.upvotes.remove(request.user.account)
+    elif voting == "up_1":
         if request.user.account in article.downvotes.all():
             article.downvotes.remove(request.user.account)
-        
+        article.upvotes.add(request.user.account)
+    elif voting == "down_0":
+        article.downvotes.remove(request.user.account)
+    elif voting == "down_1":
         if request.user.account in article.upvotes.all():
             article.upvotes.remove(request.user.account)
-        else:
-            article.upvotes.add(request.user.account)
-        
-    elif voting == "down":
-        if request.user.account in article.upvotes.all():
-            article.upvotes.remove(request.user.account)
-        
-        if request.user.account in article.downvotes.all():
-            article.downvotes.remove(request.user.account)
-        else:
-            article.downvotes.add(request.user.account)
+        article.downvotes.add(request.user.account)
     
-    context={
-        "thing": article,
-    }
     if request.htmx:
-        return render(request, "vote_button.html", context)
+        return render(request, "vote_btn.html", {"thing": article})

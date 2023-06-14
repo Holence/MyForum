@@ -22,7 +22,9 @@ class Account(models.Model):
     url = models.CharField(max_length=256, null=True, blank=True)
     bio = models.TextField(max_length=512, null=True, blank=True)
     avatar = models.ImageField(upload_to=image_upload_to_path, storage=OverwriteStorage(), null=True, blank=True)
-    following = models.ManyToManyField("self", blank=True, symmetrical=False)
+    
+    # related_name逆向表，太方便了
+    following = models.ManyToManyField("self", blank=True, symmetrical=False, related_name="follower")
 
     def get_avatar_url(self):
         return settings.MEDIA_URL + str(self.avatar)
@@ -30,6 +32,9 @@ class Account(models.Model):
     def get_profile_url(self):
         return reverse("accounts:detail", kwargs={"username": self.user.username})
     
+    def get_follow_url(self):
+        return reverse("accounts:follow", kwargs={"username": self.user.username})
+
     @property
     def sorted_article_set(self):
         return self.user_articles.order_by('updated')

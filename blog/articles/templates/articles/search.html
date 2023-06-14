@@ -5,10 +5,6 @@
 Articles
 {% endblock %}
 
-{% block js %}
-<script src="{% static 'js/htmx.min.js' %}" async></script>
-{% endblock %}
-
 {% block content %}
 
 <h1>
@@ -17,6 +13,7 @@ Articles
 
 <form>
     <select
+        class="form-select"
         name="type"
         id="search-type"
         hx-include="#search-input"
@@ -25,26 +22,34 @@ Articles
         hx-target="#search-list"
     >
         
-        {% if request.GET.type == "all" %}
-            <option value="all" selected>All</option>
+        {% if request.GET.type == "All" %}
+            <option value="All" selected>Title & Content</option>
         {% else %}
-            <option value="all">All</option>
+            <option value="All">Title & Content</option>
         {% endif %}
         
-        {% if request.GET.type == "title" %}
-            <option value="title" selected>Title</option>
+        {% if request.GET.type == "Title" %}
+            <option value="Title" selected>Title</option>
         {% else %}
-            <option value="title">Title</option>
+            <option value="Title">Title</option>
         {% endif %}
         
-        {% if request.GET.type == "content" %}
-            <option value="content" selected>Content</option>
+        {% if request.GET.type == "Content" %}
+            <option value="Content" selected>Content</option>
         {% else %}
-            <option value="content">Content</option>
+            <option value="Content">Content</option>
+        {% endif %}
+        
+        {% if request.GET.type == "Author" %}
+            <option value="Author" selected>Author</option>
+        {% else %}
+            <option value="Author">Author</option>
         {% endif %}
 
     </select>
+    <br>
     <input
+        class="form-control"
         type="search"
         name="q"
         id="search-input"

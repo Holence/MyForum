@@ -1,0 +1,5 @@
+<div class="container">
+    {% for account_ in account_list %}
+        {% include "accounts/nametag.html" with account=account_ %}
+    {% endfor %}
+</div>
