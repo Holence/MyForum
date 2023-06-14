@@ -79,7 +79,7 @@ def accounts_edit_view(request):
         if user_form.is_valid() and account_form.is_valid():
             user_form.save()
             account_form.save()
-            return redirect(account.get_profile_url())
+            return redirect(account.get_absolute_url())
     
     return render(request, "accounts/edit.html", {"forms": [user_form, account_form]})
 
@@ -95,7 +95,7 @@ def change_password_view(request):
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, form.user)
-            return redirect(request.user.account.get_profile_url())
+            return redirect(request.user.account.get_absolute_url())
     
     return render(request, "accounts/edit.html", {"forms": [form]})
 

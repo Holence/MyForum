@@ -29,7 +29,7 @@ class Account(models.Model):
     def get_avatar_url(self):
         return settings.MEDIA_URL + str(self.avatar)
 
-    def get_profile_url(self):
+    def get_absolute_url(self):
         return reverse("accounts:detail", kwargs={"username": self.user.username})
     
     def get_follow_url(self):
