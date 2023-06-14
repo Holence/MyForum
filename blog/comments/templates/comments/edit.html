@@ -1,12 +1,7 @@
 {% load static %}
 
-{% block css %}
-    <link href="{% static 'martor/css/martor.bootstrap.min.css' %}" type="text/css" media="all" rel="stylesheet" />
-    <link href="{% static 'plugins/css/ace.min.css' %}" type="text/css" media="all" rel="stylesheet" />
-    <link href="{% static 'plugins/css/resizable.min.css' %}" type="text/css" media="all" rel="stylesheet" />
-{% endblock %}
-
-{% block js %}
+<div class="row justify-content-center">
+    {% comment %} 他奶奶的，这坨东西放在div外面，被htmx插入后就不会加载，放在里面就能被加载？！！ {% endcomment %}
     <script type="text/javascript" src="{% static 'plugins/js/jquery.min.js' %}" defer></script>
     <script type="text/javascript" src="{% static 'plugins/js/bootstrap.min.js' %}" defer></script>
     <script type="text/javascript" src="{% static 'plugins/js/ace.js' %}" defer></script>
@@ -19,9 +14,8 @@
     <script type="text/javascript" src="{% static 'plugins/js/resizable.min.js' %}" defer></script>
     <script type="text/javascript" src="{% static 'plugins/js/emojis.min.js' %}" defer></script>
     <script type="text/javascript" src="{% static 'martor/js/martor.bootstrap.min.js' %}" defer></script>
-{% endblock %}
-
-<div class="row justify-content-center">
+    {% comment %} 他奶奶的，这坨东西放在div外面，被htmx插入后就不会加载，放在里面就能被加载？！！ {% endcomment %}
+    
     <div class="col-10">
         <form class="form" action="{% url "comments:post" %}" method="POST">
             {% csrf_token %}

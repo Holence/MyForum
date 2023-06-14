@@ -67,7 +67,7 @@ MARTOR_ENABLE_CONFIGS = {
     'jquery': 'true',       # to include/revoke jquery (require for admin default django)
     'living': 'false',      # to enable/disable live updates in preview
     'spellcheck': 'false',  # to enable/disable spellcheck in form textareas
-    'hljs': 'true',         # to enable/disable hljs highlighting in preview
+    'hljs': 'false',         # to enable/disable hljs highlighting in preview
 }
 
 # To show the toolbar buttons

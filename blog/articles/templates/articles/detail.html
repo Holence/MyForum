@@ -8,16 +8,13 @@
 {% endblock %}
 
 {% block css %}
+    <link href="{% static 'martor/css/martor.bootstrap.min.css' %}" type="text/css" media="all" rel="stylesheet" />
     <link href="{% static 'plugins/css/ace.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+    <link href="{% static 'plugins/css/resizable.min.css' %}" type="text/css" media="all" rel="stylesheet" />
 {% endblock %}
 
 {% block js %}
     <script type="text/javascript" src="{% static 'plugins/js/highlight.min.js' %}" defer></script>
-    <script>
-        $('.martor-preview pre').each(function(i, block){
-            hljs.highlightBlock(block);
-        });
-    </script>
 {% endblock %}
 
 {% block content %}
@@ -64,10 +61,22 @@
 
     {% include "comments/comments_list.html" with comments=article.get_comment_list article_slug=article.slug %}
 
-    <b class="row justify-content-center" style="font-size: 1.5em;">Write Comment</b>
-
-    {% include "comments/edit.html" with article_slug=article.slug reply_to_id="None" %}
+    <b class="row justify-content-center" style="font-size: 1.5em; border-bottom: chocolate 2px solid;">Write Comment</b>
     
+    <br>
+    <div id="reply_to_None" class="row justify-content-center">
+        <form class="col-auto">
+            {% csrf_token %}
+            <button class="btn btn-outline-success btn-sm"
+                type="submit"
+                hx-vals='{
+                    "article_slug":"{{article.slug}}",
+                    "reply_to_id":"None"
+                }'
+                hx-trigger="click" hx-target="#reply_to_None" hx-post="{% url "comments:reply" %}"
+            >Write a Comment</button>
+        </form>
+    </div>
 </div>
 
 {% endblock %}

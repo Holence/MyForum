@@ -7,11 +7,6 @@
 
 {% block js %}
     <script type="text/javascript" src="{% static 'plugins/js/highlight.min.js' %}" defer></script>
-    <script>
-        $('.martor-preview pre').each(function(i, block){
-            hljs.highlightBlock(block);
-        });
-    </script>
 {% endblock %}
 
 {% if article_slug %}
