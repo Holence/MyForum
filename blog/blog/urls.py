@@ -32,6 +32,7 @@ urlpatterns = [
     path('articles/', include("articles.urls")),
     path('account/', include("accounts.urls")),
     path('comment/', include("comments.urls")),
+    path('messenger/', include("messenger.urls")),
     
     # 'martor/uploader/'得放在'martor/'的前面，优先级要高于martor内部设定的martor/uploader/的markdown_uploader函数
     path('martor/uploader/', markdown_uploader, name="markdown_uploader_page"),

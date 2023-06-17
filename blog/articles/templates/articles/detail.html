@@ -34,12 +34,12 @@
         </div>
     
         <div class="row">
-            <div class="col-auto me-auto">
+            <div class="col-auto">
                 {% include "vote_btn.html" with thing=article %}
             </div>
             
             {% if article.author == request.user.account %}
-            <div class="col-auto">
+            <div class="col-auto ms-auto">
                 <a class="btn btn-outline-primary btn-sm" href="{{ article.get_edit_url }}">Edit</a>
                 <a class="btn btn-outline-danger btn-sm" href="{{ article.get_delete_url }}">Delete</a>
             </div>

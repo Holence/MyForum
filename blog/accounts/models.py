@@ -27,7 +27,10 @@ class Account(models.Model):
     following = models.ManyToManyField("self", blank=True, symmetrical=False, related_name="follower")
 
     def get_avatar_url(self):
-        return settings.MEDIA_URL + str(self.avatar)
+        if self.avatar:
+            return settings.MEDIA_URL + str(self.avatar)
+        else:
+            return settings.STATIC_URL + "img/avatar.svg"
 
     def get_absolute_url(self):
         return reverse("accounts:detail", kwargs={"username": self.user.username})

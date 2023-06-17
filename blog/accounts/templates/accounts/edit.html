@@ -1,18 +1,15 @@
 {% extends "base.html" %}
 
 {% block title %}
-Account
+{{title}}
 {% endblock %}
 
 {% block content %}
-
-<h1>{{user}}</h1>
 
 <form action="." method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {% for form in forms %}
         {% include "form.html" with form=form %}
-        <br>
     {% endfor %}
     <button class="btn btn-outline-success" type="submit">
         <i class="bi bi-save"></i> Save

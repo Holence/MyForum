@@ -8,8 +8,8 @@ from django.contrib.auth import get_user, update_session_auth_hash
 from .models import Account
 from .forms import AccountForm
 
-full_infopage_list=["Created Articles", "Upvoted Articles", "Downvoted Articles", "Upvoted Comments", "Downvoted Comments", "Following", "Follower"]
-restrict_infopage_list=["Created Articles", "Upvoted Articles", "Upvoted Comments", "Following", "Follower"]
+full_infopage_list=["Created Articles", "Upvoted Articles", "Downvoted Articles", "Created Comments", "Upvoted Comments", "Downvoted Comments", "Following", "Follower"]
+restrict_infopage_list=["Created Articles", "Upvoted Articles", "Created Comments", "Upvoted Comments", "Following", "Follower"]
 
 # Create your views here.
 def login_view(request):
@@ -87,7 +87,7 @@ def accounts_edit_view(request):
             account_form.save()
             return redirect(account.get_absolute_url())
     
-    return render(request, "accounts/edit.html", {"forms": [user_form, account_form]})
+    return render(request, "accounts/edit.html", {"title": "Edit Profile", "forms": [user_form, account_form]})
 
 @login_required
 def change_password_view(request):
@@ -103,7 +103,7 @@ def change_password_view(request):
             update_session_auth_hash(request, form.user)
             return redirect(request.user.account.get_absolute_url())
     
-    return render(request, "accounts/edit.html", {"forms": [form]})
+    return render(request, "accounts/edit.html", {"title": "Change Password", "forms": [form]})
 
 @login_required
 def accounts_follow_view(request, username):
@@ -126,18 +126,20 @@ def accounts_infopage_view(request):
 
     if infopage=="Created Articles":
         return render(request, "articles/articles_list.html", {"articles": account.sorted_article_set})
-    if infopage=="Following":
-        return render(request, "accounts/accounts_list.html", {"accounts": account.following.all() })
-    if infopage=="Follower":
-        return render(request, "accounts/accounts_list.html", {"accounts": account.follower.all() })
-    if infopage=="Follower":
-        return render(request, "accounts/accounts_list.html", {"accounts": account.follower.all() })
     if infopage=="Upvoted Articles":
         return render(request, "articles/articles_list.html", {"articles": account.upvote_articles.all() })
     if infopage=="Downvoted Articles":
         return render(request, "articles/articles_list.html", {"articles": account.downvote_articles.all() })
+    
+    if infopage=="Created Comments":
+        return render(request, "comments/comments_list.html", {"comments": account.user_comments.all(), "article_slug": None })
     if infopage=="Upvoted Comments":
         return render(request, "comments/comments_list.html", {"comments": account.upvote_comments.all(), "article_slug": None })
     if infopage=="Downvoted Comments":
         return render(request, "comments/comments_list.html", {"comments": account.downvote_comments.all(), "article_slug": None })
+    
+    if infopage=="Following":
+        return render(request, "accounts/accounts_list.html", {"accounts": account.following.all() })
+    if infopage=="Follower":
+        return render(request, "accounts/accounts_list.html", {"accounts": account.follower.all() })
     

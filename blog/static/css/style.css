@@ -10,18 +10,6 @@
     border: 2px red solid;
 }
 
-.navbar>a{
-    display: inline-block;
-    color: chocolate;
-    font-size: 2em;
-    font-weight: bold;
-    margin-right: 1em;
-}
-
-.navbar>a:hover{
-    color: rgb(230, 153, 46);
-}
-
 .small{
     font-size: 0.9em;
 }
@@ -60,6 +48,12 @@ img{
     width: 72px;
 }
 
+.avatar_small{
+    max-width: none;
+    height: 52px;
+    width: 52px;
+}
+
 html {
     overflow: scroll;
 }
@@ -68,4 +62,32 @@ html {
     height: 0px;
     width: 0px;
     background: transparent; /* make scrollbar transparent */
+}
+
+html, body {
+	height: 100%;
+	-ms-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.chocolate_big{
+    color: chocolate;
+    font-weight: bolder;
+    font-size: 2em;
+}
+
+.chocolate_small{
+    color: chocolate;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.chocolate_big:hover{
+    color: rgb(230, 153, 46);
+}
+
+.chocolate_small:hover, .chocolate_small:focus{
+    color: rgb(230, 153, 46);
 }

@@ -3,7 +3,6 @@
 <div class="row justify-content-center">
     {% comment %} 他奶奶的，这坨东西放在div外面，被htmx插入后就不会加载，放在里面就能被加载？！！ {% endcomment %}
     <script type="text/javascript" src="{% static 'plugins/js/jquery.min.js' %}" defer></script>
-    <script type="text/javascript" src="{% static 'plugins/js/bootstrap.min.js' %}" defer></script>
     <script type="text/javascript" src="{% static 'plugins/js/ace.js' %}" defer></script>
     <script type="text/javascript" src="{% static 'plugins/js/mode-markdown.js' %}" defer></script>
     <script type="text/javascript" src="{% static 'plugins/js/ext-language_tools.js' %}" defer></script>
@@ -27,6 +26,6 @@
             <input type="hidden" name="article_slug" value="{{article_slug}}" />
             <input type="hidden" name="reply_to_id" value="{{reply_to_id}}" />
             </div>
-        </form>        
+        </form>
     </div>
 </div>

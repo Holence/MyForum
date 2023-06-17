@@ -12,41 +12,66 @@
         {% endblock %}
         <link href="{% static 'martor/css/martor.bootstrap.min.css' %}" type="text/css" media="all" rel="stylesheet" />
         <link href="{% static 'plugins/css/ace.min.css' %}" type="text/css" media="all" rel="stylesheet" />
-        <link href="{% static 'plugins/css/bootstrap.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+        <link href="{% static 'css/bootstrap.min.css' %}" type="text/css" media="all" rel="stylesheet" />
         <link rel="stylesheet" href="{% static "css/style.css" %}">
 
         {% block js %}
         {% endblock %}
         <script type="text/javascript" src="{% static 'plugins/js/highlight.min.js' %}" defer></script>
+        <script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}" defer></script>
         <script src="{% static 'js/htmx.min.js' %}" defer></script>
     </head>
 
-    <body style="display: flex; justify-content: center; margin-top: 1em; padding-bottom: 20em;">
-        <div style="width: 75%;">
-            <div style="padding-bottom: 1em;">
-                <div class="navbar" style="border-bottom: chocolate 2px solid; margin-bottom: 0.5em;">
-                    <a href="{% url "home" %}">Home</a>
-                    <a href="{% url "articles:create" %}">Create</a>
-                    <a href="{% url "articles:search" %}">Search</a>
-                    
-                    {% if request.user.is_staff %}
-                        <a href="/admin/">Admin</a>
-                    {% endif %}
+    <body>
 
-                    {% if not request.user.is_authenticated %}
-                        <a href="{% url "login" %}">Login</a>
-                        <a href="{% url "register" %}">Register</a>
-                    {% endif %}
-                </div>
-                
-                {% if request.user.is_authenticated %}
-                <div style="margin-bottom: 2em;">
-                        <label class="small" style="float: left; display: inline-block;">Welcome, <a href="{{ request.user.account.get_absolute_url }}">{{request.user.username}}</a></label>
-                        <a class="small" style="float: right; display: inline-block;" href="{% url "logout" %}">Logout</a>
+        <div class="container vh-100 d-flex flex-column">
+            <div class="row flex-shrink-1">
+                <nav class="navbar navbar-expand-lg mb-3" style="border-bottom: chocolate 2px solid;">
+                    <a class="navbar-brand chocolate_big" href="{% url "home" %}">Blog</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbars" aria-controls="navbars" aria-expanded="false">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+            
+                    <div class="collapse navbar-collapse" id="navbars">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link chocolate_small" aria-current="page" href="{% url "articles:create" %}">Create</a>
+                            </li>
+                            
+                            <li class="nav-item">
+                                <a class="nav-link chocolate_small" href="{% url "articles:search" %}">Search</a>
+                            </li>
+                            
+                            {% if request.user.is_staff %}
+                                <li class="nav-item">
+                                    <a class="nav-link chocolate_small" href="/admin/">Admin</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                        {% if not request.user.is_authenticated %}
+                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link chocolate_small" href="{% url "login" %}">Login</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link chocolate_small" href="{% url "register" %}">Register</a>
+                                </li>
+                            </ul>
+                        {% endif %}
+                        {% if request.user.is_authenticated %}
+                            <div class="nav-item dropdown d-flex">
+                                <img class="nav-link dropdown-toggle avatar_small" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" src="{{ request.user.account.get_avatar_url }}">
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item chocolate_small" href="{{ request.user.account.get_absolute_url }}">Profile</a></li>
+                                    <li><a class="dropdown-item chocolate_small" href="{% url "messenger:base" %}">Messages</a></li>
+                                    <li><a class="dropdown-item chocolate_small" href="{% url "logout" %}">Logout</a></li>
+                                </ul>
+                            </div>
+                        {% endif %}
                     </div>
-                {% endif %}
+                </nav>
             </div>
-    
+            
             {% block content %}
             {% endblock %}
             

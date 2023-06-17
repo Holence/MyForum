@@ -11,7 +11,7 @@
 
                 <div class="col-auto">
                     {% include "accounts/nametag.html" with account=comment.author %}
-                </div>                    
+                </div>
                 
                 <div class="martor-preview">
                     <p>{{ comment.content|safe_markdown }}</p>
@@ -92,7 +92,7 @@
                     </div>
                     {% endif %}
                     
-                    <div class="col-auto ms-5">
+                    <div class="col-auto">
                         <div class="small">{{ comment.timestamp|date:"Y.m.d H:i" }}</div>
                     </div>
                     

@@ -1,0 +1,34 @@
+{% load static %}
+
+<div class="d-flex flex-column h-100">
+    <div class="flex-grow-1">
+        {% for message in messages %}
+        {{message.sender}} - {{message.content}} - {{message.timestamp}}
+        {% endfor %}
+    </div>
+    
+    <div class="flex-shrink-1">
+        <link href="{% static 'plugins/css/resizable.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+        <script type="text/javascript" src="{% static 'plugins/js/jquery.min.js' %}" defer></script>
+        <script type="text/javascript" src="{% static 'plugins/js/ace.js' %}" defer></script>
+        <script type="text/javascript" src="{% static 'plugins/js/mode-markdown.js' %}" defer></script>
+        <script type="text/javascript" src="{% static 'plugins/js/ext-language_tools.js' %}" defer></script>
+        <script type="text/javascript" src="{% static 'plugins/js/theme-github.js' %}" defer></script>
+        <script type="text/javascript" src="{% static 'plugins/js/typo.js' %}" defer></script>
+        <script type="text/javascript" src="{% static 'plugins/js/spellcheck.js' %}" defer></script>
+        <script type="text/javascript" src="{% static 'plugins/js/highlight.min.js' %}" defer></script>
+        <script type="text/javascript" src="{% static 'plugins/js/resizable.min.js' %}" defer></script>
+        <script type="text/javascript" src="{% static 'plugins/js/emojis.min.js' %}" defer></script>
+        <script type="text/javascript" src="{% static 'martor/js/martor.bootstrap.min.js' %}" defer></script>
+        
+        <form class="form" action="." method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+            {% include "form.html" %}
+            <button class="btn btn-outline-success" type="submit">
+                <i class="bi bi-save"></i> Send
+            </button>
+            </div>
+        </form>
+    <div>
+</div>

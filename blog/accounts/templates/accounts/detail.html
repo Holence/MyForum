@@ -9,10 +9,14 @@
 {% include "accounts/nametag.html" %}
 
 {% if account.user.username == request.user.username %}
-    <div style="display: flex; justify-content: flex-end;" >
-        <a class="small" style="margin-right: 1em;" href="{% url "accounts:password" %}">Change Password</a>
-        <a class="small" href="{% url "accounts:edit" %}">Edit Profile</a>
+    <div class="row">
+        <div class="col-auto ms-auto">
+        <a class="btn btn-outline-primary btn-sm" href="{% url "accounts:password" %}">Change Password</a>
+        <a class="btn btn-outline-primary btn-sm" href="{% url "accounts:edit" %}">Edit Profile</a>
+        </div>
     </div>
+{% else %}
+<br>
 {% endif %}
 
 <p>Url: {{account.url}}</p>
@@ -24,7 +28,7 @@
         <li class="nav-item">
             <form>
                 {% csrf_token %}
-                <button class="nav-link"
+                <button class="nav-link chocolate_small" style="font-size: 1em"
                     type="submit"
                     hx-vals='{"account":"{{account.user.username}}", "infopage": "{{infopage}}"}'
                     hx-trigger="click" hx-target="#infopage_content" hx-post="{% url "accounts:infopage" %}"
