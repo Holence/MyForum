@@ -12,4 +12,4 @@ class Messenger(models.Model):
     receiver = models.ForeignKey(Account, on_delete=models.DO_NOTHING, related_name="received_messages")
     content = MartorField()
     timestamp = models.DateTimeField(auto_now_add=True)
-    read = models.BooleanField()
+    read = models.BooleanField(default=False)

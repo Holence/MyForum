@@ -100,21 +100,22 @@ def article_delete_view(request, slug):
 @login_required
 def article_vote_view(request, slug):
     # article和comment那边一模一样，修改时请注意两边都要修改
-    article = Article.objects.get(slug=slug)
-    
-    voting=request.POST.get("voting")
-    if voting == "up_0":
-        article.upvotes.remove(request.user.account)
-    elif voting == "up_1":
-        if request.user.account in article.downvotes.all():
-            article.downvotes.remove(request.user.account)
-        article.upvotes.add(request.user.account)
-    elif voting == "down_0":
-        article.downvotes.remove(request.user.account)
-    elif voting == "down_1":
-        if request.user.account in article.upvotes.all():
+    if request.method == "POST":
+        article = Article.objects.get(slug=slug)
+        
+        voting=request.POST.get("voting")
+        if voting == "up_0":
             article.upvotes.remove(request.user.account)
-        article.downvotes.add(request.user.account)
-    
-    if request.htmx:
-        return render(request, "vote_btn.html", {"thing": article})
+        elif voting == "up_1":
+            if request.user.account in article.downvotes.all():
+                article.downvotes.remove(request.user.account)
+            article.upvotes.add(request.user.account)
+        elif voting == "down_0":
+            article.downvotes.remove(request.user.account)
+        elif voting == "down_1":
+            if request.user.account in article.upvotes.all():
+                article.upvotes.remove(request.user.account)
+            article.downvotes.add(request.user.account)
+        
+        if request.htmx:
+            return render(request, "vote_btn.html", {"thing": article})

@@ -1,16 +1,20 @@
+{% if mini %}
 <div class="row">
-    <div class="col-auto me-2" style="width: 72px;">
+    <div class="col-auto">
+        <a href="{{ account.get_absolute_url }}"><img class="avatar" src="{{ account.get_avatar_url }}"></a>
+    </div>
+</div>
+{% else %}
+<div class="row">
+    <div class="col-auto">
         <a href="{{ account.get_absolute_url }}"><img class="avatar" src="{{ account.get_avatar_url }}"></a>
     </div>
     <div class="col-auto">
         <div style="font-size: 2em;">{{account.user.first_name}} {{account.user.last_name}}</div>
         <div style="font-size: 1em;">@<a href="{{ account.get_absolute_url }}">{{account.user.username}}</a></div>
     </div>
-    
-    {% if follow_btn != "None" %}
-        <div class="col-auto ms-2">
-            {% include "follow_btn.html" %}
-        </div>
-    {% endif %}
-
+    <div class="col-auto ms-2">
+        {% include "follow_btn.html" %}
+    </div>
 </div>
+{% endif %}

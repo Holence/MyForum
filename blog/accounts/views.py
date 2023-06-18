@@ -107,39 +107,41 @@ def change_password_view(request):
 
 @login_required
 def accounts_follow_view(request, username):
-    account = Account.objects.get(user__username=username)
-    
-    follow=request.POST.get("follow")
-    if follow == "0":
-        request.user.account.following.remove(account)
-    elif follow == "1":
-        request.user.account.following.add(account)
-    
-    if request.htmx:
-        return render(request, "follow_btn.html", {"account": account})
+    if request.method == "POST":
+        account = Account.objects.get(user__username=username)
+        
+        follow=request.POST.get("follow")
+        if follow == "0":
+            request.user.account.following.remove(account)
+        elif follow == "1":
+            request.user.account.following.add(account)
+        
+        if request.htmx:
+            return render(request, "follow_btn.html", {"account": account})
 
 @login_required
 def accounts_infopage_view(request):
-    username=request.POST.get("account")
-    account = Account.objects.get(user__username=username)
-    infopage=request.POST.get("infopage")
+    if request.method == "POST":
+        username=request.POST.get("account")
+        account = Account.objects.get(user__username=username)
+        infopage=request.POST.get("infopage")
 
-    if infopage=="Created Articles":
-        return render(request, "articles/articles_list.html", {"articles": account.sorted_article_set})
-    if infopage=="Upvoted Articles":
-        return render(request, "articles/articles_list.html", {"articles": account.upvote_articles.all() })
-    if infopage=="Downvoted Articles":
-        return render(request, "articles/articles_list.html", {"articles": account.downvote_articles.all() })
-    
-    if infopage=="Created Comments":
-        return render(request, "comments/comments_list.html", {"comments": account.user_comments.all(), "article_slug": None })
-    if infopage=="Upvoted Comments":
-        return render(request, "comments/comments_list.html", {"comments": account.upvote_comments.all(), "article_slug": None })
-    if infopage=="Downvoted Comments":
-        return render(request, "comments/comments_list.html", {"comments": account.downvote_comments.all(), "article_slug": None })
-    
-    if infopage=="Following":
-        return render(request, "accounts/accounts_list.html", {"accounts": account.following.all() })
-    if infopage=="Follower":
-        return render(request, "accounts/accounts_list.html", {"accounts": account.follower.all() })
-    
+        if infopage=="Created Articles":
+            return render(request, "articles/articles_list.html", {"articles": account.sorted_article_set})
+        if infopage=="Upvoted Articles":
+            return render(request, "articles/articles_list.html", {"articles": account.upvote_articles.all() })
+        if infopage=="Downvoted Articles":
+            return render(request, "articles/articles_list.html", {"articles": account.downvote_articles.all() })
+        
+        if infopage=="Created Comments":
+            return render(request, "comments/comments_list.html", {"comments": account.user_comments.all(), "article_slug": None })
+        if infopage=="Upvoted Comments":
+            return render(request, "comments/comments_list.html", {"comments": account.upvote_comments.all(), "article_slug": None })
+        if infopage=="Downvoted Comments":
+            return render(request, "comments/comments_list.html", {"comments": account.downvote_comments.all(), "article_slug": None })
+        
+        if infopage=="Following":
+            return render(request, "accounts/accounts_list.html", {"accounts": account.following.all() })
+        if infopage=="Follower":
+            return render(request, "accounts/accounts_list.html", {"accounts": account.follower.all() })
+        

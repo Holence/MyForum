@@ -17,6 +17,7 @@
 
         {% block js %}
         {% endblock %}
+        <script type="text/javascript" src="{% static 'plugins/js/jquery.min.js' %}" defer></script>
         <script type="text/javascript" src="{% static 'plugins/js/highlight.min.js' %}" defer></script>
         <script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}" defer></script>
         <script src="{% static 'js/htmx.min.js' %}" defer></script>
@@ -26,49 +27,46 @@
 
         <div class="container vh-100 d-flex flex-column">
             <div class="row flex-shrink-1">
-                <nav class="navbar navbar-expand-lg mb-3" style="border-bottom: chocolate 2px solid;">
+                <nav class="navbar navbar-expand mb-3" style="border-bottom: chocolate 2px solid;">
                     <a class="navbar-brand chocolate_big" href="{% url "home" %}">Blog</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbars" aria-controls="navbars" aria-expanded="false">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-            
-                    <div class="collapse navbar-collapse" id="navbars">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link chocolate_small" aria-current="page" href="{% url "articles:create" %}">Create</a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link chocolate_small" href="{% url "articles:search" %}">Search</a>
+                        </li>
+                        
+                        {% if request.user.is_staff %}
                             <li class="nav-item">
-                                <a class="nav-link chocolate_small" aria-current="page" href="{% url "articles:create" %}">Create</a>
+                                <a class="nav-link chocolate_small" href="/admin/">Admin</a>
                             </li>
-                            
-                            <li class="nav-item">
-                                <a class="nav-link chocolate_small" href="{% url "articles:search" %}">Search</a>
-                            </li>
-                            
-                            {% if request.user.is_staff %}
-                                <li class="nav-item">
-                                    <a class="nav-link chocolate_small" href="/admin/">Admin</a>
-                                </li>
-                            {% endif %}
+                        {% endif %}
+                    </ul>
+
+                    {% if not request.user.is_authenticated %}
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link chocolate_small" href="{% url "login" %}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link chocolate_small" href="{% url "register" %}">Register</a>
+                        </li>
+                    </ul>
+                    {% endif %}
+
+                    {% if request.user.is_authenticated %}
+                    <div class="nav-item dropdown dropstart">
+                        <img class="nav-link dropdown-toggle avatar_small" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" src="{{ request.user.account.get_avatar_url }}">
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item chocolate_small" href="{{ request.user.account.get_absolute_url }}">Profile</a></li>
+                            <li><a class="dropdown-item chocolate_small" href="{% url "messenger:base" %}">Messages</a></li>
+                            <li><a class="dropdown-item chocolate_small" href="{% url "logout" %}">Logout</a></li>
                         </ul>
-                        {% if not request.user.is_authenticated %}
-                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                                <li class="nav-item">
-                                    <a class="nav-link chocolate_small" href="{% url "login" %}">Login</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link chocolate_small" href="{% url "register" %}">Register</a>
-                                </li>
-                            </ul>
-                        {% endif %}
-                        {% if request.user.is_authenticated %}
-                            <div class="nav-item dropdown d-flex">
-                                <img class="nav-link dropdown-toggle avatar_small" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" src="{{ request.user.account.get_avatar_url }}">
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item chocolate_small" href="{{ request.user.account.get_absolute_url }}">Profile</a></li>
-                                    <li><a class="dropdown-item chocolate_small" href="{% url "messenger:base" %}">Messages</a></li>
-                                    <li><a class="dropdown-item chocolate_small" href="{% url "logout" %}">Logout</a></li>
-                                </ul>
-                            </div>
-                        {% endif %}
                     </div>
+                    {% endif %}
                 </nav>
             </div>
             
