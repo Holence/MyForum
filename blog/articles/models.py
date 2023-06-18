@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.utils.text import slugify
 from accounts.models import Account
 from martor.models import MartorField
+import re
 
 # Create your models here.
 class Article(models.Model):
@@ -15,7 +16,10 @@ class Article(models.Model):
     updated = models.DateTimeField(auto_now=True)
     upvotes = models.ManyToManyField(Account, blank=True, related_name="upvote_articles")
     downvotes = models.ManyToManyField(Account, blank=True, related_name="downvote_articles")
-
+    
+    def __str__(self) -> str:
+        return self.title
+    
     def get_absolute_url(self):
         return reverse("articles:detail", kwargs={"slug": self.slug})
     
@@ -62,8 +66,18 @@ class Article(models.Model):
                 deepin(comment, offset)
         return comments
 
-    def __str__(self) -> str:
-        return self.title
+    def get_first_imglink(self):
+        # 这里最后的结尾不是$也不是\n而是\r\n……
+
+        match=re.search(r"(?<=\]\()/media/attachment.*(?=\))", self.content, re.MULTILINE)
+        if match:
+            return match.group()
+        else:
+            return ""
+    
+    def get_first_text(self):
+        text=self.content[:self.content.find("![")].strip()
+        return text
 
 # Signal
 

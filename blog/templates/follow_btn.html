@@ -1,4 +1,3 @@
-{% if account != request.user.account %}
 <div id="follow_{{account.user.username}}">
     <form>
         {% csrf_token %}
@@ -17,4 +16,3 @@
         {% endif %}
     </form>
 </div>
-{% endif %}

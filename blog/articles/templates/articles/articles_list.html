@@ -1,17 +1,25 @@
 {% load martortags %}
-{% for article in articles%}
-<div class="container mt-3" style="border-bottom: chocolate 2px solid;">
-    <div class="row">
-        <div class="col">
-            <h1><a href="{{ article.get_absolute_url }}">{{article.title}} - {{article.author}}</a></h1>
+{% load humanize %}
+
+<div class="container">
+    {% for article in articles %}
+        <div class="card mb-4">
+            
+            {% with article.get_first_imglink as img_link %}
+            {% if img_link %}
+                <img src="{{ img_link }}" class="card-img-top">
+            {% endif %}
+            {% endwith %}
+            
+            <div class="card-body">
+                <h2 class="card-title"><a href="{{ article.get_absolute_url }}">{{article.title}}</a></h2>
+                <h5 class="card-subtitle mb-2 text-body-secondary">{{article.author}}</h5>
+                <div class="card-text">{{ article.get_first_text|slice:":200"|safe_markdown }}</div>
+            </div>
+
+            <div class="card-footer">
+                <small class="text-body-secondary">Last updated {{ article.updated|naturaltime }} </small>
+            </div>
         </div>
-        <div class="col-2 ms-auto">
-            <p class="small">Created at: {{ article.timestamp|date:"Y.m.d H:i" }}</p>
-            <p class="small">Updated at: {{ article.updated|date:"Y.m.d H:i" }}</p>
-        </div>
-    </div>
-    <div class="row">
-        <p>{{ article.content|slice:":200"|safe_markdown }}</p>
-    </div>
+    {% endfor %}
 </div>
-{% endfor %}

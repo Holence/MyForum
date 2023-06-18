@@ -1,0 +1,34 @@
+<form>
+    <div class="btn-group-vertical" role="group">
+        {% for account, unreads in messenger_dict.items %}
+            <button type="submit" class="btn-check" id="vbtn-{{account}}" autocomplete="off"
+            hx-vals='{"account": "{{account.user.username}}" }'
+            hx-trigger="click" hx-target="#messagesbox" hx-get="{% url "messenger:messagesbox" %}"
+            onclick="
+                document.getElementById('bubble-{{account}}').hidden=true;
+                document.getElementById('current_ta').value='{{account}}';
+            "></button>
+            {% if unreads == -1 %}
+                <label class="btn btn-outline-warning border-bottom border-warning-subtle" for="vbtn-{{account}}" id="label-{{account}}">
+                    <div class="m-2 position-relative">
+                        <img class="avatar" src="{{ account.get_avatar_url }}">
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
+                            id="bubble-{{account}}">
+                            New
+                        </span>
+                    </div>
+                </label>
+            {% else %}
+                <label class="btn btn-outline-warning border-bottom border-warning-subtle" for="vbtn-{{account}}" id="label-{{account}}">
+                    <div class="m-2 position-relative">
+                        <img class="avatar" src="{{ account.get_avatar_url }}">
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger {% if unreads <= 0 %}visually-hidden{% endif %}"
+                            id="bubble-{{account}}">
+                            {{ unreads }}
+                        </span>
+                    </div>
+                </label>
+            {% endif %}
+        {% endfor %}
+    </div>
+</form>

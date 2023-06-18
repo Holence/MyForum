@@ -1,5 +1,7 @@
-<div class="container mt-3">
+<div class="container">
     {% for account in accounts %}
+    <div class="container mb-4">
         {% include "accounts/nametag.html" with account=account %}
+    </div>
     {% endfor %}
 </div>

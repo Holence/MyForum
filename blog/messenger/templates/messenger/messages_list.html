@@ -1,7 +1,32 @@
+{% load martortags %}
+
 {% for message in messages %}
-@{{message.sender}} - {{message.timestamp}}
-<br>
-{{message.content}}
-<br>
-<br>
+<div class="container mt-3 mb-3">
+    {% if account == message.sender %}
+    <div class="d-flex flex-row">
+    {% else %}
+    <div class="d-flex flex-row-reverse">
+    {% endif %}
+        <div class="col-auto me-2 ms-2">
+            <img class="avatar" src="{{ message.sender.get_avatar_url }}">
+        </div>
+        <div class="col-auto">
+            {{message.timestamp}}
+        </div>
+    </div>
+
+    {% if account == message.sender %}
+    <div class="row justify-content-start">
+        <div class="col-auto martor-preview border border-warning-subtle border-5 rounded-5" style="max-width:75%; margin-left: 92px;">
+            <p>{{ message.content|safe_markdown }}</p>
+        </div>
+    </div>
+    {% else %}
+    <div class="row justify-content-end">
+        <div class="col-auto martor-preview border border-warning-subtle border-5 rounded-5" style="max-width:75%; margin-right: 92px;">
+            <p>{{ message.content|safe_markdown }}</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
 {% endfor %}

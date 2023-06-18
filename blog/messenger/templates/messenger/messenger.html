@@ -6,35 +6,25 @@ Messenger
 
 {% block content %}
 <!-- 为base.html的d-flex flex-column中的flex-fill，同时设定为d-flex flex-row -->
-<div class="flex-fill mb-3 d-flex flex-row overflow-y-hidden">
+<div class="flex-fill mb-3 d-flex flex-row overflow-hidden">
 
     <!-- 左边栏 -->
     <!-- 为d-flex flex-row中的flex-shrink-1（横向尽量缩小） -->
-    <div class="flex-shrink-1 col-auto border border-warning-subtle border-5 rounded-4 overflow-y-hidden" style="min-width: 122px">
-        <form>
-            {% csrf_token %}
-            <div class="btn-group-vertical" role="group">
-                {% for account, unreads in message_dict.items %}
-                    <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-{{account}}" autocomplete="off"
-                    hx-vals='{"account": "{{account.user.username}}" }'
-                    hx-trigger="click" hx-target="#messagesbox" hx-post="{% url "messenger:messagesbox" %}">
-                    <label class="btn btn-outline-warning border-0 border-bottom border-warning-subtle" for="vbtn-{{account}}">
-                        <div class="m-2 position-relative">
-                            <img class="avatar" src="{{ account.get_avatar_url }}">
-                            {% if unreads > 0 %}
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    {{ unreads }}
-                                </span>
-                            {% endif %}
-                        </div>
-                    </label>
-                {% endfor %}
-            </div>
-        </form>
+    <div class="flex-shrink-1 col-auto border border-warning-subtle border-5 rounded-4 overflow-x-hidden overflow-y-auto" style="min-width: 122px" id="messengerlist">
+        {% include "messenger/messenger_list.html" %}
     </div>
+
+    <form
+        hx-get="{% url 'messenger:base' %}"
+        hx-target="#messengerlist"
+        hx-trigger="every 15s">
+        <!-- 记录左边栏选中的，定时刷新之后要加上checked进行选中 -->
+        <input type="hidden" id="current_ta" name="current_ta">
+    </form>
     
     <!-- 右边 -->
     <!-- 为d-flex flex-row中的flex-fill，同时设定为d-flex flex-column -->
     <div class="flex-fill col-auto ms-2 border border-warning-subtle border-5 rounded-4" id="messagesbox"></div>
 </div>
+
 {% endblock content %}

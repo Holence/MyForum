@@ -26,6 +26,12 @@ class Account(models.Model):
     # related_name逆向表，太方便了
     following = models.ManyToManyField("self", blank=True, symmetrical=False, related_name="follower")
 
+    def __str__(self) -> str:
+        if not self.user.first_name and not self.user.last_name:
+            return self.user.username
+        else:
+            return self.user.first_name+" "+self.user.last_name
+
     def get_avatar_url(self):
         if self.avatar:
             return settings.MEDIA_URL + str(self.avatar)
@@ -37,10 +43,11 @@ class Account(models.Model):
     
     def get_follow_url(self):
         return reverse("accounts:follow", kwargs={"username": self.user.username})
-
+    
     @property
     def sorted_article_set(self):
         return self.user_articles.order_by('-updated')
 
-    def __str__(self) -> str:
-        return self.user.username
+    @property
+    def unread_message_count(self):
+        return self.received_messages.filter(read=False).count()

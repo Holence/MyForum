@@ -9,58 +9,84 @@ from .forms import MessengerForm
 # Create your views here.
 @login_required
 def messenger_view(request):
+    
     me = request.user.account
     
-    # message_dict，键为有消息的account，值为未读消息的个数
-    message_dict={}
+    # messenger_dict，键为有消息的account，值为未读消息的个数
+    messenger_dict={}
     for message in me.sent_messages.all():
-        if not message_dict.get(message.receiver):
-            message_dict[message.receiver]=0
+        if not messenger_dict.get(message.receiver):
+            messenger_dict[message.receiver]=0
     
     for message in me.received_messages.all():
-        if not message_dict.get(message.sender):
-            message_dict[message.sender]=0
+        if not messenger_dict.get(message.sender):
+            messenger_dict[message.sender]=0
         if message.read==False:
-            message_dict[message.sender]+=1
-    
-    context = {
-        "message_dict": message_dict
-    }
-    return render(request, "messenger/messenger.html", context)
+            messenger_dict[message.sender]+=1
+
+    messenger_dict=dict(sorted(messenger_dict.items(), key = lambda x:x[0].user.username))
+
+    if request.htmx:
+        # current_ta 是 定时刷新 之前选中的
+        current_ta=request.GET.get("current_ta")
+        if current_ta:
+            current_ta=Account.objects.get(user__username=current_ta)
+            if current_ta not in messenger_dict.keys():
+                messenger_dict[current_ta]=-1
+        return render(request, "messenger/messenger_list.html", {"messenger_dict": messenger_dict, "current_ta": current_ta})
+    else:
+        # current_ta 是 点私信按钮进来的
+        # 如果点Messenger进来，是没有这个参数的
+        current_ta=request.GET.get("current_ta")
+        if current_ta:
+            current_ta=Account.objects.get(user__username=current_ta)
+            if current_ta not in messenger_dict.keys():
+                messenger_dict[current_ta]=-1
+        return render(request, "messenger/messenger.html", {"messenger_dict": messenger_dict, "current_ta": current_ta})
 
 @login_required
 def messenger_messagesbox_view(request):
-    if request.method == "POST":
-        receiver_username = request.POST.get("account")
-        form = MessengerForm(data=None)
+    me = request.user.account
 
-        sender = Account.objects.get(user__username=request.user.username)
-        receiver = Account.objects.get(user__username=receiver_username)
+    if request.method == "GET":
+        receiver_username = request.GET.get("account")
+        ta = Account.objects.get(user__username=receiver_username)
 
-        messages = Messenger.objects.filter(
-            (Q(sender=sender) & Q(receiver=receiver)) | (Q(sender=receiver) & Q(receiver=sender))
-        )
-        return render(request, "messenger/messages_box.html", {"form": form, "messages": messages, "account": receiver})
-
-@login_required
-def messenger_post_view(request):
-    if request.method == "POST":
-        receiver_username = request.POST.get("account")
-        
-        sender = Account.objects.get(user__username=request.user.username)
-        receiver = Account.objects.get(user__username=receiver_username)
-
-        form = MessengerForm(data=request.POST)
-        
-        if form.is_valid():
-            message = form.save(commit=False)
-            message.sender = sender
-            message.receiver = receiver
+        for message in Messenger.objects.filter(Q(sender=ta) & Q(receiver=me)).all():
+            message.read=True
             message.save()
 
-        form = MessengerForm(data=None)
-        messages = Messenger.objects.filter(
-            (Q(sender=sender) & Q(receiver=receiver)) | (Q(sender=receiver) & Q(receiver=sender))
-        )
+    if request.method == "POST":
+        receiver_username = request.POST.get("account")
+        ta = Account.objects.get(user__username=receiver_username)
 
-        return render(request, "messenger/messages_box.html", {"form": form, "messages": messages, "account": receiver})
+        form = MessengerForm(data=request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.sender = me
+            message.receiver = ta
+            message.save()
+
+    form = MessengerForm(data=None)
+    messages = Messenger.objects.filter(
+        (Q(sender=me) & Q(receiver=ta)) | (Q(sender=ta) & Q(receiver=me))
+    ).order_by("timestamp")
+
+    return render(request, "messenger/messages_box.html", {"form": form, "messages": messages, "account": ta})
+
+@login_required
+def messenger_messageslist_view(request):
+    if request.method == "GET":
+        receiver_username = request.GET.get("account")
+
+        me = request.user.account
+        ta = Account.objects.get(user__username=receiver_username)
+
+        for message in Messenger.objects.filter(Q(sender=ta) & Q(receiver=me)).all():
+            message.read=True
+            message.save()
+
+        messages = Messenger.objects.filter(
+            (Q(sender=me) & Q(receiver=ta)) | (Q(sender=ta) & Q(receiver=me))
+        ).order_by("timestamp")
+        return render(request, "messenger/messages_list.html", {"messages": messages, "account": ta})

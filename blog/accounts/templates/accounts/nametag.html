@@ -13,8 +13,18 @@
         <div style="font-size: 2em;">{{account.user.first_name}} {{account.user.last_name}}</div>
         <div style="font-size: 1em;">@<a href="{{ account.get_absolute_url }}">{{account.user.username}}</a></div>
     </div>
-    <div class="col-auto ms-2">
-        {% include "follow_btn.html" %}
-    </div>
+    
+    {% if account != request.user.account %}
+        <div class="col-auto">
+            <form action="{% url 'messenger:base' %}" method="GET">
+                <input type="hidden" name="current_ta" value="{{account}}">
+                <button class="btn btn-outline-primary btn-sm"
+                    type="submit">📧Message</button>
+            </form>
+        </div>
+        <div class="col-auto">
+            {% include "follow_btn.html" %}
+        </div>
+    {% endif %}
 </div>
 {% endif %}

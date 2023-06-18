@@ -1,13 +1,21 @@
 {% load static %}
 <div class="d-flex flex-column h-100" id="messagesbox">
-    
-    <div class="flex-fill overflow-y-scroll" id="messageslist">
+    <div class="flex-shrink-1 p-2 bg-warning-subtle border-bottom border-warning-subtle border-5">
+       {% include "accounts/nametag.html" %}
+    </div>
+
+    <div class="flex-fill overflow-y-scroll" id="messageslist"
+        hx-get="{% url 'messenger:messageslist' %}"
+        hx-vals='{"account": "{{account.user.username}}" }'
+        hx-target="this"
+        hx-trigger="every 3s">
         {% include "messenger/messages_list.html" %}
     </div>
 
     <script>
         $("#messageslist").scrollTop($("#messageslist")[0].scrollHeight);
     </script>
+
     <div class="flex-shrink-1 border-top border-warning-subtle border-5">
         {% comment %} <link href="{% static 'plugins/css/resizable.min.css' %}" type="text/css" media="all" rel="stylesheet" /> {% endcomment %}
         <script type="text/javascript" src="{% static 'plugins/js/ace.js' %}" defer></script>
@@ -27,7 +35,7 @@
             {% include "form.html" %}
             <button class="btn btn-outline-success" type="submit"
             hx-vals='{"account": "{{account.user.username}}" }'
-            hx-trigger="click" hx-target="#messagesbox" hx-post="{% url "messenger:post" %}"
+            hx-trigger="click" hx-target="#messagesbox" hx-post="{% url "messenger:messagesbox" %}"
             >
                 <i class="bi bi-save"></i> Send
             </button>
