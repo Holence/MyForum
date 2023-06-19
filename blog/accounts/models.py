@@ -27,10 +27,7 @@ class Account(models.Model):
     following = models.ManyToManyField("self", blank=True, symmetrical=False, related_name="follower")
 
     def __str__(self) -> str:
-        if not self.user.first_name and not self.user.last_name:
-            return self.user.username
-        else:
-            return self.user.first_name+" "+self.user.last_name
+        return self.user.username
 
     def get_avatar_url(self):
         if self.avatar:
@@ -43,6 +40,13 @@ class Account(models.Model):
     
     def get_follow_url(self):
         return reverse("accounts:follow", kwargs={"username": self.user.username})
+    
+    @property
+    def proper_name(self):
+        if not self.user.first_name and not self.user.last_name:
+            return self.user.username
+        else:
+            return self.user.first_name+" "+self.user.last_name
     
     @property
     def sorted_article_set(self):
