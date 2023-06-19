@@ -13,3 +13,6 @@ class Messenger(models.Model):
     content = MartorField()
     timestamp = models.DateTimeField(auto_now_add=True)
     read = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return self.content

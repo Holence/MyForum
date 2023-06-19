@@ -31,17 +31,17 @@
                                     "reply_to_id":"{{comment.id}}"
                                 }'
                                 hx-trigger="click" hx-target="#reply_to_{{comment.id}}" hx-post="{% url "comments:reply" %}"
-                            >💬Reply</button>
+                            >💬 Reply</button>
                         </form>
                     </div>
                     
                     <div class="col-auto">
-                        <a class="btn btn-outline-success btn-sm" href="{{ comment.get_absolute_url }}">🔗Link</a>
+                        <a class="btn btn-outline-success btn-sm" href="{{ comment.get_absolute_url }}">🔗 Link</a>
                     </div>
                     
                     {% if comment.author == request.user.account %}
                     <div class="col-auto">
-                        <a class="btn btn-outline-danger btn-sm" href="{{ comment.get_delete_url }}">Delete</a>
+                        <a class="btn btn-outline-danger btn-sm" href="{{ comment.get_delete_url }}">🗑️ Delete</a>
                     </div>
                     {% endif %}
 
@@ -57,6 +57,8 @@
                 Deleted Content
             </div>
         {% endif %}
+    {% empty %}
+        <b class="sorry">还没有人留下评论……</b>
     {% endfor %}  
 </div>
 
@@ -82,12 +84,12 @@
                     </div>
                     
                     <div class="col-auto">
-                        <a class="btn btn-outline-success btn-sm" href="{{ comment.get_absolute_url }}">🔗Link</a>
+                        <a class="btn btn-outline-success btn-sm" href="{{ comment.get_absolute_url }}">🔗 Link</a>
                     </div>
                     
                     {% if comment.author == request.user.account %}
                     <div class="col-auto">
-                        <a class="btn btn-outline-danger btn-sm" href="{{ comment.get_delete_url }}">Delete</a>
+                        <a class="btn btn-outline-danger btn-sm" href="{{ comment.get_delete_url }}">🗑️ Delete</a>
                     </div>
                     {% endif %}
                     

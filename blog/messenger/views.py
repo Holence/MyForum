@@ -6,6 +6,8 @@ from accounts.models import Account
 from .models import Messenger
 from .forms import MessengerForm
 
+from informations.utils import log_addition, log_change, log_deletion, inform_sb
+
 # Create your views here.
 @login_required
 def messenger_view(request):
@@ -42,7 +44,7 @@ def messenger_view(request):
             current_ta=Account.objects.get(user__username=current_ta)
             if current_ta not in messenger_dict.keys():
                 messenger_dict[current_ta]=-1
-        return render(request, "messenger/messenger.html", {"messenger_dict": messenger_dict, "current_ta": current_ta})
+        return render(request, "messenger/base.html", {"messenger_dict": messenger_dict, "current_ta": current_ta})
 
 @login_required
 def messenger_messagesbox_view(request):
@@ -66,6 +68,7 @@ def messenger_messagesbox_view(request):
             message.sender = me
             message.receiver = ta
             message.save()
+            log_addition(request, message, f"发送私信 {message.id}")
 
     form = MessengerForm(data=None)
     messages = Messenger.objects.filter(

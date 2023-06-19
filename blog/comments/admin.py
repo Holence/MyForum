@@ -9,6 +9,7 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ["content", "article", "author", "timestamp"]
     search_fields = ["content"]
     raw_id_fields = ["article", "author", "reply_to"]
+    list_filter = ["article", "author"]
     formfield_overrides = {
         models.TextField: {'widget': AdminMartorWidget},
     }

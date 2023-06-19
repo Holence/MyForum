@@ -17,13 +17,13 @@
 
     {% if account == message.sender %}
     <div class="row justify-content-start">
-        <div class="col-auto martor-preview border border-warning-subtle border-5 rounded-5" style="max-width:75%; margin-left: 92px;">
+        <div class="col-auto martor-preview border border-danger-subtle border-5 rounded-5" style="max-width:75%; margin-left: 92px;">
             <p>{{ message.content|safe_markdown }}</p>
         </div>
     </div>
     {% else %}
     <div class="row justify-content-end">
-        <div class="col-auto martor-preview border border-warning-subtle border-5 rounded-5" style="max-width:75%; margin-right: 92px;">
+        <div class="col-auto martor-preview border border-danger-subtle border-5 rounded-5" style="max-width:75%; margin-right: 92px;">
             <p>{{ message.content|safe_markdown }}</p>
         </div>
     </div>

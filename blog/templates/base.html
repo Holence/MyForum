@@ -59,7 +59,18 @@
 
                     {% if request.user.is_authenticated %}
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item position-relative">
+                        <li class="nav-item me-3 position-relative">
+                            <a class="nav-link chocolate_small" href="{% url "informations:base" %}">🔔</a>
+                            {% with request.user.account.unread_information_count as unreads %}
+                                {% if unreads > 0 %}
+                                    <span class="position-absolute translate-middle badge rounded-pill bg-danger" style="top: 25%; left: 75%;"
+                                        id="bubble-{{account}}">
+                                        {{ unreads }}
+                                    </span>
+                                {% endif %}
+                            {% endwith %}
+                        </li>
+                        <li class="nav-item me-3 position-relative">
                             <a class="nav-link chocolate_small" href="{% url "messenger:base" %}">📧</a>
                             {% with request.user.account.unread_message_count as unreads %}
                                 {% if unreads > 0 %}
@@ -74,7 +85,7 @@
                     {% endif %}
 
                     {% if request.user.is_authenticated %}
-                    <div class="nav-item ms-3 dropdown dropstart">
+                    <div class="nav-item dropdown dropstart">
                         <img class="nav-link dropdown-toggle avatar_small" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" src="{{ request.user.account.get_avatar_url }}">
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item chocolate_small" href="{{ request.user.account.get_absolute_url }}">Profile</a></li>

@@ -9,7 +9,7 @@
                 document.getElementById('current_ta').value='{{account}}';
             "></button>
             {% if unreads == -1 %}
-                <label class="btn btn-outline-warning border-bottom border-warning-subtle" for="vbtn-{{account}}" id="label-{{account}}">
+                <label class="btn btn-outline-danger border-bottom border-danger-subtle" for="vbtn-{{account}}" id="label-{{account}}">
                     <div class="m-2 position-relative">
                         <img class="avatar" src="{{ account.get_avatar_url }}">
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
@@ -19,7 +19,7 @@
                     </div>
                 </label>
             {% else %}
-                <label class="btn btn-outline-warning border-bottom border-warning-subtle" for="vbtn-{{account}}" id="label-{{account}}">
+                <label class="btn btn-outline-danger border-bottom border-danger-subtle" for="vbtn-{{account}}" id="label-{{account}}">
                     <div class="m-2 position-relative">
                         <img class="avatar" src="{{ account.get_avatar_url }}">
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger {% if unreads <= 0 %}visually-hidden{% endif %}"

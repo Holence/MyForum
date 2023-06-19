@@ -55,3 +55,7 @@ class Account(models.Model):
     @property
     def unread_message_count(self):
         return self.received_messages.filter(read=False).count()
+
+    @property
+    def unread_information_count(self):
+        return self.user_informations.filter(read=False).count()

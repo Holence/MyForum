@@ -14,6 +14,9 @@ class Comment(models.Model):
     downvotes = models.ManyToManyField(Account, blank=True, related_name="downvote_comments")
     reply_to = models.ForeignKey("self", on_delete=models.DO_NOTHING, blank=True, null=True, related_name="reply")
 
+    def __str__(self) -> str:
+        return self.content
+    
     def get_absolute_url(self):
         return self.article.get_absolute_url()+"#"+self.get_unique_id()
     

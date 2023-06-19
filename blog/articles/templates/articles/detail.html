@@ -40,8 +40,8 @@
             
             {% if article.author == request.user.account %}
             <div class="col-auto ms-auto">
-                <a class="btn btn-outline-primary btn-sm" href="{{ article.get_edit_url }}">Edit</a>
-                <a class="btn btn-outline-danger btn-sm" href="{{ article.get_delete_url }}">Delete</a>
+                <a class="btn btn-outline-primary btn-sm" href="{{ article.get_edit_url }}">✒️ Edit</a>
+                <a class="btn btn-outline-danger btn-sm" href="{{ article.get_delete_url }}">🗑️ Delete</a>
             </div>
             {% endif %}
         
@@ -50,7 +50,7 @@
 
 </div>
 
-<div>
+<div style="padding-bottom: 40em;">
     <b class="row justify-content-center" style="font-size: 2em; border-bottom: chocolate 2px solid;">Comments</b>
 
     {% include "comments/comments_list.html" with comments=article.get_comment_list article_slug=article.slug %}
@@ -68,7 +68,7 @@
                     "reply_to_id":"None"
                 }'
                 hx-trigger="click" hx-target="#reply_to_None" hx-post="{% url "comments:reply" %}"
-            >Write a Comment</button>
+            >✍ Write a Comment</button>
         </form>
     </div>
 </div>

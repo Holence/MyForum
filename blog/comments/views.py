@@ -4,6 +4,8 @@ from articles.models import Article
 from .models import Comment
 from .forms import CommentForm
 
+from informations.utils import log_addition, log_change, log_deletion, inform_sb
+
 # Create your views here.
 def have_permission(request, comment):
     return request.user==comment.author.user or request.user.is_superuser
@@ -26,6 +28,16 @@ def comment_post_view(request):
             comment.article = article
             comment.reply_to = reply_to
             comment.save()
+
+            for account in request.user.account.follower.all():
+                if (reply_to==None and account!=article.author) or (reply_to!=None and account!=comment.reply_to.author):
+                    inform_sb(account, request.user.account, {"type": "comment", "action": "create", "extra": comment.id })
+            if reply_to==None:
+                inform_sb(article.author, request.user.account, {"type": "comment", "action": "reply", "extra": comment.id })
+            else:
+                inform_sb(comment.reply_to.author, request.user.account, {"type": "comment", "action": "reply", "extra": comment.id })
+
+            log_addition(request, comment, f"发表评论 {comment.id}")
             return redirect(comment.get_absolute_url())
 
 @login_required
@@ -55,6 +67,7 @@ def comment_delete_view(request, id):
             if choice=="Yes":
                 comment.content=None
                 comment.save()
+                log_change(request, comment, f"删除评论 {comment.id}")
             return redirect(article.get_absolute_url())
     else:
         return render(request, "alert.html", {"message": "You do not have permission to delete!"})
@@ -68,16 +81,27 @@ def comment_vote_view(request, id):
         voting=request.POST.get("voting")
         if voting == "up_0":
             comment.upvotes.remove(request.user.account)
+            log_change(request, comment, f"取消点赞评论 {comment.id}")
+        
         elif voting == "up_1":
             if request.user.account in comment.downvotes.all():
                 comment.downvotes.remove(request.user.account)
             comment.upvotes.add(request.user.account)
+            for account in request.user.account.follower.all():
+                if account!=comment.author:
+                    inform_sb(account, request.user.account, {"type": "comment", "action": "upvote", "extra": comment.id })
+            inform_sb(comment.author, request.user.account, {"type": "comment", "action": "upvote", "extra": comment.id })
+            log_change(request, comment, f"点赞评论 {comment.id}")
+        
         elif voting == "down_0":
             comment.downvotes.remove(request.user.account)
+            log_change(request, comment, f"取消点踩评论 {comment.id}")
+        
         elif voting == "down_1":
             if request.user.account in comment.upvotes.all():
                 comment.upvotes.remove(request.user.account)
             comment.downvotes.add(request.user.account)
+            log_change(request, comment, f"点踩评论 {comment.id}")
         
         if request.htmx:
             return render(request, "vote_btn.html", {"thing": comment})

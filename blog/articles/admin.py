@@ -9,6 +9,7 @@ class ArticleAdmin(admin.ModelAdmin):
     list_display = ["id", "title", "author", "timestamp", "updated"]
     search_fields = ["title", "content"]
     raw_id_fields = ["author"]
+    list_filter = ["author"]
     formfield_overrides = {
         models.TextField: {'widget': AdminMartorWidget},
     }

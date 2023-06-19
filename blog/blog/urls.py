@@ -29,10 +29,11 @@ urlpatterns = [
     path('login/', login_view, name="login"),
     path('logout/', logout_view, name="logout"),
     path('register/', register_view, name="register"),
-    path('articles/', include("articles.urls")),
+    path('article/', include("articles.urls")),
     path('account/', include("accounts.urls")),
     path('comment/', include("comments.urls")),
     path('messenger/', include("messenger.urls")),
+    path('information/', include("informations.urls")),
     
     # 'martor/uploader/'得放在'martor/'的前面，优先级要高于martor内部设定的martor/uploader/的markdown_uploader函数
     path('martor/uploader/', markdown_uploader, name="markdown_uploader_page"),

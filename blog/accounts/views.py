@@ -2,11 +2,13 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.forms.models import modelform_factory
 from blog.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user, update_session_auth_hash
 from .models import Account
 from .forms import AccountForm
+
+from informations.utils import log_addition, log_change, log_deletion, inform_sb
 
 full_infopage_list=["Created Articles", "Upvoted Articles", "Downvoted Articles", "Created Comments", "Upvoted Comments", "Downvoted Comments", "Following", "Follower"]
 restrict_infopage_list=["Created Articles", "Upvoted Articles", "Created Comments", "Upvoted Comments", "Following", "Follower"]
@@ -85,6 +87,10 @@ def accounts_edit_view(request):
         if user_form.is_valid() and account_form.is_valid():
             user_form.save()
             account_form.save()
+            
+            log_change(request, user, "修改用户信息")
+            log_change(request, account, "修改用户信息")
+            
             return redirect(account.get_absolute_url())
     
     return render(request, "accounts/edit.html", {"title": "Edit Profile", "forms": [user_form, account_form]})
@@ -100,7 +106,10 @@ def change_password_view(request):
         form=PasswordChangeForm(request.user, data=request.POST)
         if form.is_valid():
             form.save()
+            
+            log_change(request, request.user, "修改密码")
             update_session_auth_hash(request, form.user)
+            
             return redirect(request.user.account.get_absolute_url())
     
     return render(request, "accounts/edit.html", {"title": "Change Password", "forms": [form]})
@@ -113,8 +122,13 @@ def accounts_follow_view(request, username):
         follow=request.POST.get("follow")
         if follow == "0":
             request.user.account.following.remove(account)
+            
+            log_change(request, request.user, f"取消关注用户 {account.user.id}")
         elif follow == "1":
             request.user.account.following.add(account)
+            
+            inform_sb(account, request.user.account, {"type": "account", "action": "follow"})
+            log_change(request, request.user, f"关注用户 {account.user.id}")
         
         if request.htmx:
             return render(request, "follow_btn.html", {"account": account})

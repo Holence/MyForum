@@ -6,6 +6,8 @@ from .forms import ArticleForm
 from comments.forms import CommentForm
 # Create your views here.
 
+from informations.utils import log_addition, log_change, log_deletion, inform_sb
+
 def have_permission(request, article):
     return request.user==article.author.user or request.user.is_superuser
 
@@ -19,6 +21,11 @@ def article_create_view(request):
             article=form.save(commit=False)
             article.author=request.user.account
             article.save()
+            
+            for account in request.user.account.follower.all():
+                inform_sb(account, request.user.account, {"type": "article", "action": "create", "extra": article.id })
+            log_addition(request, article, f"创建文章 {article.id}")
+
             return redirect(article.get_absolute_url())
         
     return render(request, "articles/edit.html", {"mode": "Create", "form": form})
@@ -76,6 +83,11 @@ def article_edit_view(request, slug):
             form = ArticleForm(data=request.POST, instance=article)
             if form.is_valid():
                 form.save()
+                
+                for account in request.user.account.follower.all():
+                    inform_sb(account, request.user.account, {"type": "article", "action": "edit", "extra": article.id })
+                log_change(request, article, f"修改文章 {article.id}")
+
                 return redirect(article.get_absolute_url())
         return render(request, "articles/edit.html", {"mode": "Edit", "form": form})
     else:
@@ -90,6 +102,7 @@ def article_delete_view(request, slug):
         if request.method=="POST":
             choice=request.POST.get("choice")
             if choice=="Yes":
+                log_deletion(request, article, f"删除文章 {article.id}")
                 article.delete()
                 return redirect("home")
             else:
@@ -106,16 +119,27 @@ def article_vote_view(request, slug):
         voting=request.POST.get("voting")
         if voting == "up_0":
             article.upvotes.remove(request.user.account)
+            log_change(request, article, f"取消点赞文章 {article.id}")
+        
         elif voting == "up_1":
             if request.user.account in article.downvotes.all():
                 article.downvotes.remove(request.user.account)
             article.upvotes.add(request.user.account)
+            for account in request.user.account.follower.all():
+                if account!=article.author:
+                    inform_sb(account, request.user.account, {"type": "article", "action": "upvote", "extra": article.id })
+            inform_sb(article.author, request.user.account, {"type": "article", "action": "upvote", "extra": article.id })
+            log_change(request, article, f"点赞文章 {article.id}")
+        
         elif voting == "down_0":
             article.downvotes.remove(request.user.account)
+            log_change(request, article, f"取消点踩文章 {article.id}")
+        
         elif voting == "down_1":
             if request.user.account in article.upvotes.all():
                 article.upvotes.remove(request.user.account)
             article.downvotes.add(request.user.account)
+            log_change(request, article, f"点踩文章 {article.id}")
         
         if request.htmx:
             return render(request, "vote_btn.html", {"thing": article})

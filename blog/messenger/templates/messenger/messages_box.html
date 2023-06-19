@@ -1,6 +1,6 @@
 {% load static %}
 <div class="d-flex flex-column h-100" id="messagesbox">
-    <div class="flex-shrink-1 p-2 bg-warning-subtle border-bottom border-warning-subtle border-5">
+    <div class="flex-shrink-1 p-2 bg-danger-subtle border-bottom border-danger-subtle border-5">
        {% include "accounts/nametag.html" %}
     </div>
 
@@ -16,7 +16,7 @@
         $("#messageslist").scrollTop($("#messageslist")[0].scrollHeight);
     </script>
 
-    <div class="flex-shrink-1 border-top border-warning-subtle border-5">
+    <div class="flex-shrink-1 border-top border-danger-subtle border-5">
         {% comment %} <link href="{% static 'plugins/css/resizable.min.css' %}" type="text/css" media="all" rel="stylesheet" /> {% endcomment %}
         <script type="text/javascript" src="{% static 'plugins/js/ace.js' %}" defer></script>
         <script type="text/javascript" src="{% static 'plugins/js/mode-markdown.js' %}" defer></script>
@@ -32,13 +32,15 @@
         <form class="form">
             {% csrf_token %}
             <div class="form-group">
-            {% include "form.html" %}
-            <button class="btn btn-outline-success" type="submit"
-            hx-vals='{"account": "{{account.user.username}}" }'
-            hx-trigger="click" hx-target="#messagesbox" hx-post="{% url "messenger:messagesbox" %}"
-            >
-                <i class="bi bi-save"></i> Send
-            </button>
+                {% include "form.html" %}
+                <div class="d-grid col-6 mx-auto">
+                        <button class="btn btn-outline-success" type="submit"
+                        hx-vals='{"account": "{{account.user.username}}" }'
+                        hx-trigger="click" hx-target="#messagesbox" hx-post="{% url "messenger:messagesbox" %}"
+                        >
+                            Send
+                        </button>
+                </div>
             </div>
         </form>
     <div>

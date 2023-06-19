@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block title %}
+Informations
+{% endblock title %}
+
+{% block content %}
+<div class="flex-fill mb-3 d-flex flex-row overflow-hidden">
+    <div class="col-auto border border-success-subtle border-5 rounded-4 overflow-x-hidden overflow-y-auto w-100">
+        {% for information in informations_list %}
+            <div class="row p-4 border-bottom border-success-subtle border-5">
+                <div class="col-auto position-relative">
+                    <a href="{{ information.account.get_absolute_url }}">@{{information.account.user.username}}</a>
+                    {{information.action}}{{information.type}} - {{information.timestamp|naturaltime}}
+                    
+                    {% if information.thing %}
+                    <br>
+                    <h5><a href="{{information.thing.get_absolute_url}}">{{information.thing|slice:":50"}}</a></h5>
+                    {% endif %}
+                    
+                    {% if not information.read %}
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                            New
+                        </span>
+                    {% endif %}
+                </div>
+                
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

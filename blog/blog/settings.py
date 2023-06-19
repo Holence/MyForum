@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'accounts',
     'comments',
     'messenger',
+    'informations',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
