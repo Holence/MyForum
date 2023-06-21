@@ -11,3 +11,7 @@ To-Dos:
 - Encrypted Storage
 - messages
 - informations
+
+## Build \ Deploy
+
+Change your setting in `.env` file, then `docker compose up`.
