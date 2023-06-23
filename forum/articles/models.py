@@ -76,7 +76,9 @@ class Article(models.Model):
             return ""
     
     def get_first_text(self):
-        text=re.sub(r"!\[.*?\)", "", self.content).strip()
+        # 这里最后的结尾不是$也不是\n而是\r\n……
+        
+        text=re.sub(r"!\[.*\)", "", self.content, flags=re.MULTILINE).strip()
         return text
 
 # Signal
