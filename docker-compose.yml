@@ -1,8 +1,8 @@
 
 services:
-  blog:
-    container_name: blog
-    build: ./blog
+  forum:
+    container_name: forum
+    build: ./forum
     command: bash -c "python ./manage.py makemigrations --noinput && python ./manage.py migrate --noinput && python ./manage.py collectstatic --noinput && python ./manage.py runserver 0.0.0.0:8000"
     volumes:
       - media_volume:/app/media

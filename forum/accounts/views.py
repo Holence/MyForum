@@ -1,14 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.forms.models import modelform_factory
-from blog.decorators import login_required
+from forum.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user, update_session_auth_hash
 from .models import Account
 from .forms import AccountForm
 
-from informations.utils import log_addition, log_change, log_deletion, inform_sb
+from informations.utils import log_change, inform_sb
 
 full_infopage_list=["Created Articles", "Upvoted Articles", "Downvoted Articles", "Created Comments", "Upvoted Comments", "Downvoted Comments", "Following", "Follower"]
 restrict_infopage_list=["Created Articles", "Upvoted Articles", "Created Comments", "Upvoted Comments", "Following", "Follower"]

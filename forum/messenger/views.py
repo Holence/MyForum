@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from django.db.models import Q
-from blog.decorators import login_required
+from forum.decorators import login_required
 
 from accounts.models import Account
 from .models import Messenger
 from .forms import MessengerForm
 
-from informations.utils import log_addition, log_change, log_deletion, inform_sb
+from informations.utils import log_addition
 
 # Create your views here.
 @login_required

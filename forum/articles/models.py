@@ -76,7 +76,7 @@ class Article(models.Model):
             return ""
     
     def get_first_text(self):
-        text=self.content[:self.content.find("![")].strip()
+        text=re.sub(r"!\[.*?\)", "", self.content).strip()
         return text
 
 # Signal

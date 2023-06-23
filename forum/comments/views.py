@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
-from blog.decorators import login_required
+from forum.decorators import login_required
 from articles.models import Article
 from .models import Comment
 from .forms import CommentForm
 
-from informations.utils import log_addition, log_change, log_deletion, inform_sb
+from informations.utils import log_addition, log_change, inform_sb
 
 # Create your views here.
 def have_permission(request, comment):
@@ -65,9 +65,9 @@ def comment_delete_view(request, id):
         if request.method=="POST":
             choice=request.POST.get("choice")
             if choice=="Yes":
+                log_change(request, comment, f"删除评论 {comment.id}")
                 comment.content=None
                 comment.save()
-                log_change(request, comment, f"删除评论 {comment.id}")
             return redirect(article.get_absolute_url())
     else:
         return render(request, "alert.html", {"message": "You do not have permission to delete!"})

@@ -42,6 +42,11 @@ img{
     height: auto;
 }
 
+div[id*='Comment'] .martor-preview img{
+    max-width: 50%!important;
+    height: auto;
+}
+
 .card-img-top {
     width: 100%;
     height: 25vh;

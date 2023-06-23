@@ -4,9 +4,11 @@
     <head>
         <title>
             {% block title %}
-            Welcome to My Blog!
+            Welcome to My Forum!
             {% endblock %}
         </title>
+
+        <link rel="icon" type="image/x-icon" href="{% static '/img/favicon.ico' %}">
         
         {% block css %}
         {% endblock %}
@@ -28,7 +30,7 @@
         <div class="container vh-100 d-flex flex-column">
             <div class="row flex-shrink-1">
                 <nav class="navbar navbar-expand mb-3" style="border-bottom: chocolate 2px solid;">
-                    <a class="navbar-brand chocolate_big" href="{% url "home" %}">Blog</a>
+                    <a class="navbar-brand chocolate_big" href="{% url "home" %}">Forum</a>
                     
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">

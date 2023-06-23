@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from blog.decorators import login_required
+from forum.decorators import login_required
 from django.db.models import Q
 from .models import Article
 from .forms import ArticleForm
