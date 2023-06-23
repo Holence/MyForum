@@ -1,4 +1,4 @@
-# Django-Intro
+# MyForum
 
 A forum where users can
 
