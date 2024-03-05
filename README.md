@@ -12,7 +12,14 @@ A forum where users can
 
 Change your setting in `.env` file, then `docker compose up`.
 
-## Scrennshots
+```bash
+# 1. Create superuser using DJANGO_SUPERUSER in .env
+docker exec -it forum python ./manage.py createsuperuser --noinput
+
+# 2. Log into the forum, go to the admin page, go to accounts, add an account link to your admin username
+```
+
+## Scrennshot
 
 ![demo1](./scrennshots/demo1.jpg)
 
