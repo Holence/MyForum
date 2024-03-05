@@ -112,7 +112,7 @@ MARTOR_MARKDOWN_EXTENSIONS = [
 MARTOR_MARKDOWN_EXTENSION_CONFIGS = {}
 
 # Markdown urls
-MARTOR_UPLOAD_URL = '/martor/uploader/' # default
+MARTOR_UPLOAD_URL = '/uploader/' # default
 
 MARTOR_UPLOAD_PATH = 'attachment/'
 # 2.5MB - 2621440
